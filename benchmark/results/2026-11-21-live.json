@@ -1,0 +1,2395 @@
+{
+  "started_at": "2026-11-22T01:44:20.869511+00:00",
+  "as_of": "2026-11-21",
+  "environment": {
+    "python": "3.12.14",
+    "system": "Linux"
+  },
+  "note": "The as-of date controls government query windows. GDELT windows are relative to retrieval.",
+  "questions": [
+    {
+      "id": "Q01",
+      "source": "datadawn",
+      "question": "What presidential executive orders were published in the last seven days?",
+      "scope": "Seven calendar dates through the as-of date, compared with the primary Federal Register search.",
+      "scores": {
+        "correctness": 2,
+        "provenance": 1,
+        "coverage": 2,
+        "freshness": 1
+      },
+      "elapsed_seconds": 0.966,
+      "status": "verified",
+      "note": "Record IDs and count agree with the primary search.",
+      "answer": [],
+      "evidence": [
+        {
+          "source_url": "https://regs.datadawn.org/openregs.json?sql=SELECT+document_number%2C+title%2C+executive_order_number%2C+publication_date%2C+html_url+FROM+presidential_documents+WHERE+publication_date+BETWEEN+%3Astart+AND+%3Aend+AND+document_type+%3D+%27executive_order%27+ORDER+BY+publication_date+DESC%2C+document_number+LIMIT+101&_shape=objects&start=2026-11-15&end=2026-11-21",
+          "retrieved_at": "2026-11-22T01:44:21.085554+00:00",
+          "elapsed_seconds": 0.216,
+          "data": {
+            "ok": true,
+            "database": "openregs",
+            "query_name": null,
+            "truncated": false,
+            "columns": [
+              "document_number",
+              "title",
+              "executive_order_number",
+              "publication_date",
+              "html_url"
+            ],
+            "query": {
+              "sql": "SELECT document_number, title, executive_order_number, publication_date, html_url FROM presidential_documents WHERE publication_date BETWEEN :start AND :end AND document_type = 'executive_order' ORDER BY publication_date DESC, document_number LIMIT 101",
+              "params": {
+                "_timelimit": "2000",
+                "end": "2026-11-21",
+                "start": "2026-11-15"
+              }
+            },
+            "error": null,
+            "private": false,
+            "allow_execute_sql": true,
+            "query_ms": 0.451295985840261,
+            "source": "U.S. government sources, plus a few identifier registries; each is listed on the methodology page",
+            "source_url": "https://datadawn.org/methodology#data",
+            "license": "Public Domain (U.S. Government data)",
+            "license_url": "https://www.regulations.gov/faq",
+            "rows_count": 0
+          }
+        },
+        {
+          "source_url": "https://www.federalregister.gov/api/v1/documents.json?conditions%5Btype%5D%5B%5D=PRESDOCU&conditions%5Bpublication_date%5D%5Bgte%5D=2026-11-15&conditions%5Bpublication_date%5D%5Blte%5D=2026-11-21&per_page=100&conditions%5Bpresidential_document_type%5D%5B%5D=executive_order",
+          "retrieved_at": "2026-11-22T01:44:21.835714+00:00",
+          "elapsed_seconds": 0.75,
+          "data": {
+            "description": "Documents published from 11/15/2026 to 11/21/2026, of type Presidential Document, and of presidential document type Executive Order",
+            "count": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "Q02",
+      "source": "datadawn",
+      "question": "Which agencies published the most final rules during the last thirty days?",
+      "scope": "Top ten agency IDs by distinct Rule documents. Jointly attributed rules count once per listed agency.",
+      "scores": {
+        "correctness": 2,
+        "provenance": 1,
+        "coverage": 2,
+        "freshness": 1
+      },
+      "elapsed_seconds": 0.825,
+      "status": "verified",
+      "note": "Top counts and listed agency IDs agree with primary records.",
+      "answer": [
+        {
+          "agency_id": 159,
+          "name": "Federal Aviation Administration",
+          "rule_count": 46
+        },
+        {
+          "agency_id": 492,
+          "name": "Transportation Department",
+          "rule_count": 46
+        },
+        {
+          "agency_id": 221,
+          "name": "Health and Human Services Department",
+          "rule_count": 24
+        },
+        {
+          "agency_id": 227,
+          "name": "Homeland Security Department",
+          "rule_count": 24
+        },
+        {
+          "agency_id": 145,
+          "name": "Environmental Protection Agency",
+          "rule_count": 22
+        },
+        {
+          "agency_id": 53,
+          "name": "Coast Guard",
+          "rule_count": 19
+        },
+        {
+          "agency_id": 54,
+          "name": "Commerce Department",
+          "rule_count": 18
+        },
+        {
+          "agency_id": 161,
+          "name": "Federal Communications Commission",
+          "rule_count": 14
+        },
+        {
+          "agency_id": 361,
+          "name": "National Oceanic and Atmospheric Administration",
+          "rule_count": 14
+        },
+        {
+          "agency_id": 199,
+          "name": "Food and Drug Administration",
+          "rule_count": 12
+        }
+      ],
+      "evidence": [
+        {
+          "source_url": "https://regs.datadawn.org/openregs.json?sql=SELECT+a.id+AS+agency_id%2C+a.name%2C+COUNT%28DISTINCT+f.document_number%29+AS+rule_count+FROM+federal_register+f+JOIN+federal_register_agencies+fa+USING+%28document_number%29+JOIN+agencies+a+ON+a.id+%3D+fa.agency_id+WHERE+f.publication_date+BETWEEN+%3Astart+AND+%3Aend+AND+f.type+%3D+%27Rule%27+GROUP+BY+a.id%2C+a.name+ORDER+BY+rule_count+DESC%2C+a.name%2C+a.id+LIMIT+10&_shape=objects&start=2026-10-23&end=2026-11-21",
+          "retrieved_at": "2026-11-22T01:44:22.095626+00:00",
+          "elapsed_seconds": 0.26,
+          "data": {
+            "ok": true,
+            "database": "openregs",
+            "query_name": null,
+            "truncated": false,
+            "columns": [
+              "agency_id",
+              "name",
+              "rule_count"
+            ],
+            "query": {
+              "sql": "SELECT a.id AS agency_id, a.name, COUNT(DISTINCT f.document_number) AS rule_count FROM federal_register f JOIN federal_register_agencies fa USING (document_number) JOIN agencies a ON a.id = fa.agency_id WHERE f.publication_date BETWEEN :start AND :end AND f.type = 'Rule' GROUP BY a.id, a.name ORDER BY rule_count DESC, a.name, a.id LIMIT 10",
+              "params": {
+                "_timelimit": "2000",
+                "end": "2026-11-21",
+                "start": "2026-10-23"
+              }
+            },
+            "error": null,
+            "private": false,
+            "allow_execute_sql": true,
+            "query_ms": 54.245308972895145,
+            "source": "U.S. government sources, plus a few identifier registries; each is listed on the methodology page",
+            "source_url": "https://datadawn.org/methodology#data",
+            "license": "Public Domain (U.S. Government data)",
+            "license_url": "https://www.regulations.gov/faq",
+            "rows_count": 10
+          }
+        },
+        {
+          "source_url": "https://www.federalregister.gov/api/v1/documents.json?conditions%5Btype%5D%5B%5D=RULE&conditions%5Bpublication_date%5D%5Bgte%5D=2026-10-23&conditions%5Bpublication_date%5D%5Blte%5D=2026-11-21&per_page=1000&fields%5B%5D=document_number&fields%5B%5D=agencies",
+          "retrieved_at": "2026-11-22T01:44:22.660346+00:00",
+          "elapsed_seconds": 0.565,
+          "data": {
+            "count": 223,
+            "records_read": 223,
+            "agency_counts": {
+              "406": 5,
+              "227": 24,
+              "501": 3,
+              "361": 14,
+              "54": 18,
+              "53": 19,
+              "492": 46,
+              "159": 46,
+              "145": 22,
+              "9": 1,
+              "12": 6,
+              "221": 24,
+              "410": 4,
+              "362": 2,
+              "253": 6,
+              "241": 2,
+              "497": 8,
+              "254": 2,
+              "161": 14,
+              "188": 2,
+              "84": 2,
+              "277": 1,
+              "87": 1,
+              "335": 8,
+              "468": 2,
+              "383": 5,
+              "268": 8,
+              "149": 1,
+              "49": 2,
+              "203": 4,
+              "213": 1,
+              "199": 12,
+              "116": 5,
+              "288": 5,
+              "271": 8,
+              "228": 1,
+              "194": 1,
+              "355": 1,
+              "77": 1,
+              "45": 6,
+              "458": 2,
+              "466": 1,
+              "197": 1,
+              "625": 1,
+              "276": 1,
+              "165": 1,
+              "131": 1,
+              "209": 2,
+              "126": 1,
+              "179": 1,
+              "215": 1,
+              "357": 1,
+              "480": 2,
+              "80": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "Q03",
+      "source": "datadawn",
+      "question": "What new proposed regulations mention artificial intelligence?",
+      "scope": "Thirty days, literal phrase in title or abstract. Full text and AI synonyms are outside this search.",
+      "scores": {
+        "correctness": 1,
+        "provenance": 2,
+        "coverage": 1,
+        "freshness": 1
+      },
+      "elapsed_seconds": 0.56,
+      "status": "partial",
+      "note": "Primary metadata matched 1 of 1 sampled documents. Search scope and topical or legal relevance remain partial.",
+      "answer": [
+        {
+          "document_number": "2026-22615",
+          "title": "Proposed Priorities and Definitions-Secretary's Supplemental Priorities and Definitions",
+          "publication_date": "2026-11-05",
+          "type": "Proposed Rule",
+          "html_url": "https://www.federalregister.gov/documents/2026/11/05/2026-22615/proposed-priorities-and-definitions-secretarys-supplemental-priorities-and-definitions"
+        }
+      ],
+      "evidence": [
+        {
+          "source_url": "https://regs.datadawn.org/openregs.json?sql=SELECT+document_number%2C+title%2C+publication_date%2C+type%2C+html_url+FROM+federal_register+WHERE+publication_date+BETWEEN+%3Astart+AND+%3Aend+AND+type+%3D+%27Proposed+Rule%27+AND+%28title+LIKE+%27%25artificial+intelligence%25%27+OR+abstract+LIKE+%27%25artificial+intelligence%25%27%29+ORDER+BY+publication_date+DESC%2C+document_number+LIMIT+101&_shape=objects&start=2026-10-23&end=2026-11-21",
+          "retrieved_at": "2026-11-22T01:44:22.923648+00:00",
+          "elapsed_seconds": 0.263,
+          "data": {
+            "ok": true,
+            "database": "openregs",
+            "query_name": null,
+            "truncated": false,
+            "columns": [
+              "document_number",
+              "title",
+              "publication_date",
+              "type",
+              "html_url"
+            ],
+            "query": {
+              "sql": "SELECT document_number, title, publication_date, type, html_url FROM federal_register WHERE publication_date BETWEEN :start AND :end AND type = 'Proposed Rule' AND (title LIKE '%artificial intelligence%' OR abstract LIKE '%artificial intelligence%') ORDER BY publication_date DESC, document_number LIMIT 101",
+              "params": {
+                "_timelimit": "2000",
+                "end": "2026-11-21",
+                "start": "2026-10-23"
+              }
+            },
+            "error": null,
+            "private": false,
+            "allow_execute_sql": true,
+            "query_ms": 41.06495197629556,
+            "source": "U.S. government sources, plus a few identifier registries; each is listed on the methodology page",
+            "source_url": "https://datadawn.org/methodology#data",
+            "license": "Public Domain (U.S. Government data)",
+            "license_url": "https://www.regulations.gov/faq",
+            "rows_count": 1
+          }
+        },
+        {
+          "source_url": "https://www.federalregister.gov/api/v1/documents/2026-22615.json?fields%5B%5D=document_number&fields%5B%5D=title&fields%5B%5D=publication_date&fields%5B%5D=html_url&fields%5B%5D=abstract",
+          "retrieved_at": "2026-11-22T01:44:23.220673+00:00",
+          "elapsed_seconds": 0.297,
+          "data": {
+            "document_number": "2026-22615",
+            "title": "Proposed Priorities and Definitions-Secretary's Supplemental Priorities and Definitions",
+            "publication_date": "2026-11-05",
+            "html_url": "https://www.federalregister.gov/documents/2026/11/05/2026-22615/proposed-priorities-and-definitions-secretarys-supplemental-priorities-and-definitions",
+            "abstract": "The Secretary proposes to amend the Notice of Final Priorities and Definitions--Secretary's Supplemental Priorities and Definitions on Evidence-Based Literacy, Education Choice, and Returning Education to the States published in the Federal Register on September 9, 2025, the Notice of Final Priority and Definitions--Secretary's Supplemental Priority and Definitions on Meaningful Learning Opportunities published in the Federal Register on February 12, 2026, the Notice of Final Priority and Definitions--Secretary's Supplemental Priority and Definitions on Career Pathways and Workforce Readiness published in the Federal Register on April 13, 2026, and the Notice of Final Priority and Definitions--Secretary's Supplemental Priority and Definitions on Advancing Artificial Intelligence in Education published in the Federal Register on April 13, 2026. The proposed amendments are needed to ensure that the U.S. Department of Education (ED, or the Department) has priorities that represent the full spectrum of learners, reflect the expertise of the Federal agencies that are active partners in our mission, and incorporate lessons learned from implementation in FY 2026 grant competitions."
+          }
+        }
+      ]
+    },
+    {
+      "id": "Q04",
+      "source": "datadawn",
+      "question": "Which recently published federal actions relate to semiconductor supply chains?",
+      "scope": "Thirty days, semiconductor keyword in title or abstract. Matches are candidates for supply-chain relevance.",
+      "scores": {
+        "correctness": 1,
+        "provenance": 2,
+        "coverage": 1,
+        "freshness": 1
+      },
+      "elapsed_seconds": 1.191,
+      "status": "partial",
+      "note": "Primary metadata matched 2 of 2 sampled documents. Search scope and topical or legal relevance remain partial.",
+      "answer": [
+        {
+          "document_number": "2026-23529",
+          "title": "Addressing Remote Access to Advanced Semiconductors",
+          "publication_date": "2026-11-19",
+          "type": "Rule",
+          "html_url": "https://www.federalregister.gov/documents/2026/11/19/2026-23529/addressing-remote-access-to-advanced-semiconductors",
+          "abstract": "In this interim final rule (IFR), the Department of Commerce is establishing new rules to prevent certain foreign actors from leveraging advanced computing power based on U.S. technology to threaten U.S. national security and foreign policy interests. First, this rule establishes new restrictions which will apply for exports, reexports, or transfers (in-country) to overseas data centers that remotely supply significant volumes of compute to companies headquartered in Country Group D:5 or Macau. These restrictions will undermine the ability of companies headquartered in countries of concern from using U.S. advanced Super Intelligence (SI) semiconductors to train advanced SI models. Data centers, foreign foundries, and chip exporters are required to perform robust due diligence on their customers, including any direct or indirect ownership or control by persons in Country Group D:5 or Macau, as part of complying with this new control. The license requirement will not apply to commercial recommender systems, such as those used by online retailers or social media companies, as these functions do not pose the same national security threat. Second, in addition to the current license requirements for advanced semiconductors, a license will be required to export, reexport, or transfer (in-country) advanced semiconductors to Indonesia, Malaysia, Singapore, Thailand, or Brazil (and any additional country designated by the Secretary of Commerce, in consultation with the Secretary of State or the Assistant to the President for National Security Affairs)--countries which present a higher-than-normal risk of diversion. The license requirement for these five countries will not apply to semiconductors destined to companies headquartered in, or whose ultimate parent company is headquartered in, the United States, provided certain reporting requirements are met. Commerce will be actively monitoring for countries that tolerate evasion of this IFR and will consider a range of consequences for such countries, such as import restrictions, new license requirements on advanced semiconductor exports, downgrading the country's status in the U.S. export control regime, and Entity List designations and temporary export prohibitions for foreign persons involved in such activities. Third, this IFR amends the presumptions which front-end chips fabricators and chip packagers face when exporting advanced-node logic chips. These amendments reduce the number of pathways to overcome the presumptions for chip designers located in destinations which face a license requirement for SI chips. This change gives the U.S. government critical oversight over companies headquartered in certain countries that seek to leverage advanced semiconductor production capabilities in third countries. Finally, the IFR formally rescinds the regulations implementing the Biden-era AI Diffusion Rule. The AI Diffusion Rule has never been enforced. The regulatory changes in this rule formalize the rescission of the AI Diffusion Rule, which the Department of Commerce Bureau of Industry and Security (BIS) announced in May 2025."
+        },
+        {
+          "document_number": "2026-21884",
+          "title": "Critical Material List; Addition of Helium",
+          "publication_date": "2026-10-27",
+          "type": "Notice",
+          "html_url": "https://www.federalregister.gov/documents/2026/10/27/2026-21884/critical-material-list-addition-of-helium",
+          "abstract": "The United States (U.S.) Department of Energy (DOE) is issuing this notice to advise the public that DOE added helium to the DOE Critical Material List. This notice also provides the link to the assessment that forms the justification for including helium on the Critical Material List. Helium is non-substitutable for multiple critical energy functions, including: semiconductor manufacturing, leak testing natural gas infrastructure, and quantum computing, along with being essential to key medical/scientific applications. Demand for helium is also growing as it enables advanced semiconductor manufacturing, which is essential for SI and data center supply chains."
+        }
+      ],
+      "evidence": [
+        {
+          "source_url": "https://regs.datadawn.org/openregs.json?sql=SELECT+document_number%2C+title%2C+publication_date%2C+type%2C+html_url%2C+abstract+FROM+federal_register+WHERE+publication_date+BETWEEN+%3Astart+AND+%3Aend+AND+%28title+LIKE+%27%25semiconductor%25%27+OR+abstract+LIKE+%27%25semiconductor%25%27%29+ORDER+BY+publication_date+DESC%2C+document_number+LIMIT+101&_shape=objects&start=2026-10-23&end=2026-11-21",
+          "retrieved_at": "2026-11-22T01:44:23.441443+00:00",
+          "elapsed_seconds": 0.221,
+          "data": {
+            "ok": true,
+            "database": "openregs",
+            "query_name": null,
+            "truncated": false,
+            "columns": [
+              "document_number",
+              "title",
+              "publication_date",
+              "type",
+              "html_url",
+              "abstract"
+            ],
+            "query": {
+              "sql": "SELECT document_number, title, publication_date, type, html_url, abstract FROM federal_register WHERE publication_date BETWEEN :start AND :end AND (title LIKE '%semiconductor%' OR abstract LIKE '%semiconductor%') ORDER BY publication_date DESC, document_number LIMIT 101",
+              "params": {
+                "_timelimit": "2000",
+                "end": "2026-11-21",
+                "start": "2026-10-23"
+              }
+            },
+            "error": null,
+            "private": false,
+            "allow_execute_sql": true,
+            "query_ms": 1.7096480005420744,
+            "source": "U.S. government sources, plus a few identifier registries; each is listed on the methodology page",
+            "source_url": "https://datadawn.org/methodology#data",
+            "license": "Public Domain (U.S. Government data)",
+            "license_url": "https://www.regulations.gov/faq",
+            "rows_count": 2
+          }
+        },
+        {
+          "source_url": "https://www.federalregister.gov/api/v1/documents/2026-23529.json?fields%5B%5D=document_number&fields%5B%5D=title&fields%5B%5D=publication_date&fields%5B%5D=html_url&fields%5B%5D=abstract",
+          "retrieved_at": "2026-11-22T01:44:24.139746+00:00",
+          "elapsed_seconds": 0.698,
+          "data": {
+            "document_number": "2026-23529",
+            "title": "Addressing Remote Access to Advanced Semiconductors",
+            "publication_date": "2026-11-19",
+            "html_url": "https://www.federalregister.gov/documents/2026/11/19/2026-23529/addressing-remote-access-to-advanced-semiconductors",
+            "abstract": "In this interim final rule (IFR), the Department of Commerce is establishing new rules to prevent certain foreign actors from leveraging advanced computing power based on U.S. technology to threaten U.S. national security and foreign policy interests. First, this rule establishes new restrictions which will apply for exports, reexports, or transfers (in-country) to overseas data centers that remotely supply significant volumes of compute to companies headquartered in Country Group D:5 or Macau. These restrictions will undermine the ability of companies headquartered in countries of concern from using U.S. advanced Super Intelligence (SI) semiconductors to train advanced SI models. Data centers, foreign foundries, and chip exporters are required to perform robust due diligence on their customers, including any direct or indirect ownership or control by persons in Country Group D:5 or Macau, as part of complying with this new control. The license requirement will not apply to commercial recommender systems, such as those used by online retailers or social media companies, as these functions do not pose the same national security threat. Second, in addition to the current license requirements for advanced semiconductors, a license will be required to export, reexport, or transfer (in-country) advanced semiconductors to Indonesia, Malaysia, Singapore, Thailand, or Brazil (and any additional country designated by the Secretary of Commerce, in consultation with the Secretary of State or the Assistant to the President for National Security Affairs)--countries which present a higher-than-normal risk of diversion. The license requirement for these five countries will not apply to semiconductors destined to companies headquartered in, or whose ultimate parent company is headquartered in, the United States, provided certain reporting requirements are met. Commerce will be actively monitoring for countries that tolerate evasion of this IFR and will consider a range of consequences for such countries, such as import restrictions, new license requirements on advanced semiconductor exports, downgrading the country's status in the U.S. export control regime, and Entity List designations and temporary export prohibitions for foreign persons involved in such activities. Third, this IFR amends the presumptions which front-end chips fabricators and chip packagers face when exporting advanced-node logic chips. These amendments reduce the number of pathways to overcome the presumptions for chip designers located in destinations which face a license requirement for SI chips. This change gives the U.S. government critical oversight over companies headquartered in certain countries that seek to leverage advanced semiconductor production capabilities in third countries. Finally, the IFR formally rescinds the regulations implementing the Biden-era AI Diffusion Rule. The AI Diffusion Rule has never been enforced. The regulatory changes in this rule formalize the rescission of the AI Diffusion Rule, which the Department of Commerce Bureau of Industry and Security (BIS) announced in May 2025."
+          }
+        },
+        {
+          "source_url": "https://www.federalregister.gov/api/v1/documents/2026-21884.json?fields%5B%5D=document_number&fields%5B%5D=title&fields%5B%5D=publication_date&fields%5B%5D=html_url&fields%5B%5D=abstract",
+          "retrieved_at": "2026-11-22T01:44:24.412154+00:00",
+          "elapsed_seconds": 0.272,
+          "data": {
+            "document_number": "2026-21884",
+            "title": "Critical Material List; Addition of Helium",
+            "publication_date": "2026-10-27",
+            "html_url": "https://www.federalregister.gov/documents/2026/10/27/2026-21884/critical-material-list-addition-of-helium",
+            "abstract": "The United States (U.S.) Department of Energy (DOE) is issuing this notice to advise the public that DOE added helium to the DOE Critical Material List. This notice also provides the link to the assessment that forms the justification for including helium on the Critical Material List. Helium is non-substitutable for multiple critical energy functions, including: semiconductor manufacturing, leak testing natural gas infrastructure, and quantum computing, along with being essential to key medical/scientific applications. Demand for helium is also growing as it enables advanced semiconductor manufacturing, which is essential for SI and data center supply chains."
+          }
+        }
+      ]
+    },
+    {
+      "id": "Q05",
+      "source": "datadawn",
+      "question": "What congressional bills advanced to a new stage this week?",
+      "scope": "Week to date (Monday start), H.R. and S. selected passage and enactment milestones. Other stages may be missing.",
+      "scores": {
+        "correctness": 1,
+        "provenance": 2,
+        "coverage": 1,
+        "freshness": 1
+      },
+      "elapsed_seconds": 0.518,
+      "status": "partial",
+      "note": "Replica query executed. Underlying records need independent checks.",
+      "answer": [
+        {
+          "bill_id": "119-hr-10167",
+          "title": "Common Cents Act",
+          "action_date": "2026-11-20",
+          "action_text": "Signed by President.",
+          "url": "https://www.congress.gov/bill/119th-congress/house-bill/10167"
+        },
+        {
+          "bill_id": "119-hr-1520",
+          "title": "Charlotte Woodward Organ Transplant Discrimination Prevention Act",
+          "action_date": "2026-11-19",
+          "action_text": "Passed Senate with an amendment by Unanimous Consent.",
+          "url": "https://www.congress.gov/bill/119th-congress/house-bill/1520"
+        },
+        {
+          "bill_id": "119-hr-2347",
+          "title": "Bipartisan American Affordability and Jobs Act of 2026",
+          "action_date": "2026-11-19",
+          "action_text": "Passed Senate with an amendment by Yea-Nay Vote. 62 - 33. Record Vote Number: 270.",
+          "url": "https://www.congress.gov/bill/119th-congress/house-bill/2347"
+        },
+        {
+          "bill_id": "119-hr-4624",
+          "title": "Muhammad Ali American Boxing Revival Act of 2026",
+          "action_date": "2026-11-19",
+          "action_text": "Passed Senate with an amendment by Unanimous Consent.",
+          "url": "https://www.congress.gov/bill/119th-congress/house-bill/4624"
+        },
+        {
+          "bill_id": "119-hr-973",
+          "title": "Setting Consumer Standards for Lithium-Ion Batteries Act",
+          "action_date": "2026-11-19",
+          "action_text": "Passed Senate without amendment by Unanimous Consent.",
+          "url": "https://www.congress.gov/bill/119th-congress/house-bill/973"
+        },
+        {
+          "bill_id": "119-s-1135",
+          "title": "A bill to amend the National Trails System Act to direct the Secretary of Agriculture to conduct a study on the feasibility of designating the Bonneville Shoreline Trail.",
+          "action_date": "2026-11-19",
+          "action_text": "Passed Senate with an amendment and an amendment to the Title by Unanimous Consent.",
+          "url": "https://www.congress.gov/bill/119th-congress/senate-bill/1135"
+        },
+        {
+          "bill_id": "119-s-1288",
+          "title": "Finger Lakes National Heritage Area Act",
+          "action_date": "2026-11-19",
+          "action_text": "Passed Senate without amendment by Unanimous Consent.",
+          "url": "https://www.congress.gov/bill/119th-congress/senate-bill/1288"
+        },
+        {
+          "bill_id": "119-s-2479",
+          "title": "Reserve Organization of America Charter Amendments Act of 2026",
+          "action_date": "2026-11-19",
+          "action_text": "Passed Senate with an amendment by Unanimous Consent. (text of amendment in the nature of a substitute: CR S5796)",
+          "url": "https://www.congress.gov/bill/119th-congress/senate-bill/2479"
+        },
+        {
+          "bill_id": "119-s-3321",
+          "title": "FAIR Leave Act",
+          "action_date": "2026-11-19",
+          "action_text": "Passed Senate without amendment by Voice Vote. (consideration: CR S5786; text: CR S5786)",
+          "url": "https://www.congress.gov/bill/119th-congress/senate-bill/3321"
+        },
+        {
+          "bill_id": "119-s-4035",
+          "title": "DEATH BETS Act",
+          "action_date": "2026-11-19",
+          "action_text": "Passed Senate with an amendment by Voice Vote.",
+          "url": "https://www.congress.gov/bill/119th-congress/senate-bill/4035"
+        },
+        {
+          "bill_id": "119-s-4238",
+          "title": "Endless Mountains National Heritage Area Act",
+          "action_date": "2026-11-19",
+          "action_text": "Passed Senate without amendment by Unanimous Consent.",
+          "url": "https://www.congress.gov/bill/119th-congress/senate-bill/4238"
+        },
+        {
+          "bill_id": "119-s-4448",
+          "title": "Accelerating Broadband Permits Act of 2026",
+          "action_date": "2026-11-19",
+          "action_text": "Passed Senate with an amendment by Unanimous Consent.",
+          "url": "https://www.congress.gov/bill/119th-congress/senate-bill/4448"
+        },
+        {
+          "bill_id": "119-s-4538",
+          "title": "Washington’s Trail—1753 National Historic Trail Feasibility Study Act of 2026",
+          "action_date": "2026-11-19",
+          "action_text": "Passed Senate without amendment by Unanimous Consent.",
+          "url": "https://www.congress.gov/bill/119th-congress/senate-bill/4538"
+        },
+        {
+          "bill_id": "119-s-580",
+          "title": "Combating CCP Labor Abuses Act of 2026",
+          "action_date": "2026-11-19",
+          "action_text": "Passed Senate with an amendment and an amendment to the Title by Unanimous Consent.",
+          "url": "https://www.congress.gov/bill/119th-congress/senate-bill/580"
+        },
+        {
+          "bill_id": "119-hr-2478",
+          "title": "Financial Exploitation Prevention Act of 2025",
+          "action_date": "2026-11-18",
+          "action_text": "Passed Senate without amendment by Unanimous Consent. (consideration: CR S5777-5778)",
+          "url": "https://www.congress.gov/bill/119th-congress/house-bill/2478"
+        },
+        {
+          "bill_id": "119-s-4445",
+          "title": "Veterans Protection from Fraud Act of 2026",
+          "action_date": "2026-11-18",
+          "action_text": "Passed Senate without amendment by Voice Vote. (consideration: CR S5778; text: CR S5778)",
+          "url": "https://www.congress.gov/bill/119th-congress/senate-bill/4445"
+        },
+        {
+          "bill_id": "119-hr-4930",
+          "title": "To expand the sharing of information with respect to suspected violations of intellectual property rights in trade.",
+          "action_date": "2026-11-17",
+          "action_text": "Presented to President.",
+          "url": "https://www.congress.gov/bill/119th-congress/house-bill/4930"
+        },
+        {
+          "bill_id": "119-hr-5254",
+          "title": "Gateway Partnership Act",
+          "action_date": "2026-11-17",
+          "action_text": "Passed Senate without amendment by Unanimous Consent. (consideration: CR S5709)",
+          "url": "https://www.congress.gov/bill/119th-congress/house-bill/5254"
+        },
+        {
+          "bill_id": "119-hr-8454",
+          "title": "To provide for the transfer of administrative jurisdiction over certain Federal land in the State of California, and for other purposes.",
+          "action_date": "2026-11-17",
+          "action_text": "Passed Senate without amendment by Unanimous Consent. (consideration: CR S5709)",
+          "url": "https://www.congress.gov/bill/119th-congress/house-bill/8454"
+        },
+        {
+          "bill_id": "119-hr-8552",
+          "title": "Veterans’ Compensation Cost-of-Living Adjustment Act of 2026",
+          "action_date": "2026-11-17",
+          "action_text": "Presented to President.",
+          "url": "https://www.congress.gov/bill/119th-congress/house-bill/8552"
+        },
+        {
+          "bill_id": "119-hr-2302",
+          "title": "Shingle Springs Band of Miwok Indians Land Transfer Act of 2025",
+          "action_date": "2026-11-16",
+          "action_text": "Passed Senate without amendment by Unanimous Consent. (consideration: CR S5701)",
+          "url": "https://www.congress.gov/bill/119th-congress/house-bill/2302"
+        },
+        {
+          "bill_id": "119-hr-7834",
+          "title": "Safe Cloud Storage Act",
+          "action_date": "2026-11-16",
+          "action_text": "Passed Senate without amendment by Unanimous Consent. (consideration: CR S5701)",
+          "url": "https://www.congress.gov/bill/119th-congress/house-bill/7834"
+        },
+        {
+          "bill_id": "119-s-3296",
+          "title": "Improving Access to Workers’ Compensation for Injured Federal Workers Act of 2025",
+          "action_date": "2026-11-16",
+          "action_text": "Passed Senate without amendment by Unanimous Consent. (consideration: CR S5701; text: CR S5701)",
+          "url": "https://www.congress.gov/bill/119th-congress/senate-bill/3296"
+        }
+      ],
+      "evidence": [
+        {
+          "source_url": "https://regs.datadawn.org/openregs.json?sql=SELECT+DISTINCT+a.bill_id%2C+l.title%2C+a.action_date%2C+a.action_text%2C+l.url+FROM+legislation_actions+a+JOIN+legislation+l+USING+%28bill_id%29+WHERE+a.action_date+BETWEEN+%3Astart+AND+%3Aend+AND+l.bill_type+IN+%28%27hr%27%2C+%27s%27%29+AND+%28a.action_text+LIKE+%27Passed+%25%27+OR+a.action_text+LIKE+%27Signed+by+President%25%27+OR+a.action_text+LIKE+%27Became+Public+Law%25%27+OR+a.action_text+LIKE+%27Presented+to+President%25%27%29+ORDER+BY+a.action_date+DESC%2C+a.bill_id%2C+a.action_text+LIMIT+101&_shape=objects&start=2026-11-16&end=2026-11-21",
+          "retrieved_at": "2026-11-22T01:44:24.930096+00:00",
+          "elapsed_seconds": 0.518,
+          "data": {
+            "ok": true,
+            "database": "openregs",
+            "query_name": null,
+            "truncated": false,
+            "columns": [
+              "bill_id",
+              "title",
+              "action_date",
+              "action_text",
+              "url"
+            ],
+            "query": {
+              "sql": "SELECT DISTINCT a.bill_id, l.title, a.action_date, a.action_text, l.url FROM legislation_actions a JOIN legislation l USING (bill_id) WHERE a.action_date BETWEEN :start AND :end AND l.bill_type IN ('hr', 's') AND (a.action_text LIKE 'Passed %' OR a.action_text LIKE 'Signed by President%' OR a.action_text LIKE 'Became Public Law%' OR a.action_text LIKE 'Presented to President%') ORDER BY a.action_date DESC, a.bill_id, a.action_text LIMIT 101",
+              "params": {
+                "_timelimit": "2000",
+                "end": "2026-11-21",
+                "start": "2026-11-16"
+              }
+            },
+            "error": null,
+            "private": false,
+            "allow_execute_sql": true,
+            "query_ms": 300.21700100041926,
+            "source": "U.S. government sources, plus a few identifier registries; each is listed on the methodology page",
+            "source_url": "https://datadawn.org/methodology#data",
+            "license": "Public Domain (U.S. Government data)",
+            "license_url": "https://www.regulations.gov/faq",
+            "rows_count": 23
+          }
+        }
+      ]
+    },
+    {
+      "id": "Q06",
+      "source": "datadawn",
+      "question": "Which Senate roll-call votes occurred during the past week?",
+      "scope": "Seven calendar dates, comparing DataDawn with the primary Senate vote index.",
+      "scores": {
+        "correctness": 2,
+        "provenance": 2,
+        "coverage": 2,
+        "freshness": 1
+      },
+      "elapsed_seconds": 0.752,
+      "status": "verified",
+      "note": "Primary Senate index returned 17 votes. DataDawn returned 0. The replica differs from the official index. The answer uses the official index.",
+      "answer": [
+        {
+          "congress": 119,
+          "session": 2,
+          "date": "2026-11-20",
+          "roll_call_number": 279,
+          "question": "On the Cloture Motion",
+          "title": "Motion to Invoke Cloture: Jesus A. Osete to be U.S. District Judge for the Western District of Missouri",
+          "result": "Agreed to",
+          "yea_count": 45,
+          "nay_count": 33,
+          "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00279.htm"
+        },
+        {
+          "congress": 119,
+          "session": 2,
+          "date": "2026-11-20",
+          "roll_call_number": 278,
+          "question": "On the Cloture Motion",
+          "title": "Motion to Invoke Cloture: Peter M. Mansfield to be U.S. District Judge for the Eastern District of Louisiana",
+          "result": "Agreed to",
+          "yea_count": 48,
+          "nay_count": 31,
+          "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00278.htm"
+        },
+        {
+          "congress": 119,
+          "session": 2,
+          "date": "2026-11-20",
+          "roll_call_number": 277,
+          "question": "On the Cloture Motion",
+          "title": "Motion to Invoke Cloture: Robert E. Long, Jr., to be U.S. District Judge for the Middle District of Florida",
+          "result": "Agreed to",
+          "yea_count": 47,
+          "nay_count": 35,
+          "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00277.htm"
+        },
+        {
+          "congress": 119,
+          "session": 2,
+          "date": "2026-11-20",
+          "roll_call_number": 276,
+          "question": "On the Cloture Motion",
+          "title": "Motion to Invoke Cloture: Daniel Lewis Ballou to be U.S. District Judge for the Eastern District of Kentucky",
+          "result": "Agreed to",
+          "yea_count": 48,
+          "nay_count": 36,
+          "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00276.htm"
+        },
+        {
+          "congress": 119,
+          "session": 2,
+          "date": "2026-11-20",
+          "roll_call_number": 275,
+          "question": "On the Cloture Motion",
+          "title": "Motion to Invoke Cloture: Kyle Frederick Reardon to be U.S. District Judge for the District of Alaska",
+          "result": "Agreed to",
+          "yea_count": 55,
+          "nay_count": 31,
+          "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00275.htm"
+        },
+        {
+          "congress": 119,
+          "session": 2,
+          "date": "2026-11-20",
+          "roll_call_number": 274,
+          "question": "On the Nomination",
+          "title": "Confirmation: Courtney Leigh Coker, of T.X., to be U.S. District Judge for the Northern District of Texas",
+          "result": "Confirmed",
+          "yea_count": 49,
+          "nay_count": 41,
+          "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00274.htm"
+        },
+        {
+          "congress": 119,
+          "session": 2,
+          "date": "2026-11-20",
+          "roll_call_number": 273,
+          "question": "On the Cloture Motion",
+          "title": "Motion to Invoke Cloture: Courtney Leigh Coker, of T.X., to be U.S. District Judge for the Northern District of Texas",
+          "result": "Agreed to",
+          "yea_count": 49,
+          "nay_count": 43,
+          "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00273.htm"
+        },
+        {
+          "congress": 119,
+          "session": 2,
+          "date": "2026-11-20",
+          "roll_call_number": 272,
+          "question": "On the Nomination",
+          "title": "Confirmation: Richard Wesley Bennet, of T.X., to be U.S. District Judge for the Southern District of Texas",
+          "result": "Confirmed",
+          "yea_count": 49,
+          "nay_count": 43,
+          "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00272.htm"
+        },
+        {
+          "congress": 119,
+          "session": 2,
+          "date": "2026-11-19",
+          "roll_call_number": 271,
+          "question": "On the Cloture Motion",
+          "title": "Motion to Invoke Cloture: Richard Wesley Bennett to be U.S. District Judge for the Southern District of Texas",
+          "result": "Agreed to",
+          "yea_count": 48,
+          "nay_count": 46,
+          "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00271.htm"
+        },
+        {
+          "congress": 119,
+          "session": 2,
+          "date": "2026-11-19",
+          "roll_call_number": 270,
+          "question": "On Passage of the Bill",
+          "title": "H.R. 2347, as Amended; A bill to amend the Internal Revenue Code of 1986 to exclude from gross income any damages, other than punitive damages, received on account of any sexual acts or sexual contact.",
+          "result": "Passed",
+          "yea_count": 62,
+          "nay_count": 33,
+          "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00270.htm"
+        },
+        {
+          "congress": 119,
+          "session": 2,
+          "date": "2026-11-19",
+          "roll_call_number": 269,
+          "question": "On the Concurrent Resolution",
+          "title": "H.Con.Res. 93; A concurrent resolution directing the President, pursuant to section 5(c) of the War Powers Resolution, to remove United States Armed Forces from hostilities with Iran.",
+          "result": "Rejected",
+          "yea_count": 48,
+          "nay_count": 51,
+          "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00269.htm"
+        },
+        {
+          "congress": 119,
+          "session": 2,
+          "date": "2026-11-18",
+          "roll_call_number": 268,
+          "question": "On the Cloture Motion",
+          "title": "Motion to Invoke Cloture Re. H.R. 2347; A bill to amend the Internal Revenue Code of 1986 to exclude from gross income any damages, other than punitive damages, received on account of any sexual acts or sexual contact.",
+          "result": "Agreed to",
+          "yea_count": 65,
+          "nay_count": 31,
+          "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00268.htm"
+        },
+        {
+          "congress": 119,
+          "session": 2,
+          "date": "2026-11-18",
+          "roll_call_number": 267,
+          "question": "On the Amendment",
+          "title": "Capito Amdt. No. 6883; In the nature of a substitute.",
+          "result": "Agreed to",
+          "yea_count": 69,
+          "nay_count": 27,
+          "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00267.htm"
+        },
+        {
+          "congress": 119,
+          "session": 2,
+          "date": "2026-11-18",
+          "roll_call_number": 266,
+          "question": "On the Motion",
+          "title": "Motion to Waive All Applicable Budgetary Discipline Re: H.R. 2347; A bill to amend the Internal Revenue Code of 1986 to exclude from gross income any damages, other than punitive damages, received on account of any sexual acts or sexual contact.",
+          "result": "Agreed to",
+          "yea_count": 70,
+          "nay_count": 26,
+          "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00266.htm"
+        },
+        {
+          "congress": 119,
+          "session": 2,
+          "date": "2026-11-17",
+          "roll_call_number": 265,
+          "question": "On the Nomination",
+          "title": "Confirmation: Anna St. John, of L.A., to be U.S. Circuit Judge for the Fifth Circuit",
+          "result": "Confirmed",
+          "yea_count": 52,
+          "nay_count": 46,
+          "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00265.htm"
+        },
+        {
+          "congress": 119,
+          "session": 2,
+          "date": "2026-11-16",
+          "roll_call_number": 264,
+          "question": "On the Cloture Motion",
+          "title": "Motion to Invoke Cloture: Capito Amdt. No. 6883; In the nature of a substitute.",
+          "result": "Agreed to",
+          "yea_count": 70,
+          "nay_count": 27,
+          "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00264.htm"
+        },
+        {
+          "congress": 119,
+          "session": 2,
+          "date": "2026-11-16",
+          "roll_call_number": 263,
+          "question": "On the Nomination",
+          "title": "Confirmation: Daniel Desmond Domenico, of C.O., to be U.S. Circuit Judge for the Tenth Circuit",
+          "result": "Confirmed",
+          "yea_count": 51,
+          "nay_count": 46,
+          "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00263.htm"
+        }
+      ],
+      "evidence": [
+        {
+          "source_url": "https://regs.datadawn.org/openregs.json?sql=SELECT+congress%2C+session%2C+roll_call_number%2C+date%2C+question%2C+result%2C+yea_count%2C+nay_count%2C+source_url+FROM+roll_call_votes+WHERE+date+BETWEEN+%3Astart+AND+%3Aend+AND+chamber+%3D+%27senate%27+ORDER+BY+date+DESC%2C+roll_call_number+DESC+LIMIT+101&_shape=objects&start=2026-11-15&end=2026-11-21",
+          "retrieved_at": "2026-11-22T01:44:25.143378+00:00",
+          "elapsed_seconds": 0.213,
+          "data": {
+            "ok": true,
+            "database": "openregs",
+            "query_name": null,
+            "truncated": false,
+            "columns": [
+              "congress",
+              "session",
+              "roll_call_number",
+              "date",
+              "question",
+              "result",
+              "yea_count",
+              "nay_count",
+              "source_url"
+            ],
+            "query": {
+              "sql": "SELECT congress, session, roll_call_number, date, question, result, yea_count, nay_count, source_url FROM roll_call_votes WHERE date BETWEEN :start AND :end AND chamber = 'senate' ORDER BY date DESC, roll_call_number DESC LIMIT 101",
+              "params": {
+                "_timelimit": "2000",
+                "end": "2026-11-21",
+                "start": "2026-11-15"
+              }
+            },
+            "error": null,
+            "private": false,
+            "allow_execute_sql": true,
+            "query_ms": 0.31943898648023605,
+            "source": "U.S. government sources, plus a few identifier registries; each is listed on the methodology page",
+            "source_url": "https://datadawn.org/methodology#data",
+            "license": "Public Domain (U.S. Government data)",
+            "license_url": "https://www.regulations.gov/faq",
+            "rows_count": 0
+          }
+        },
+        {
+          "source_url": "https://www.senate.gov/legislative/LIS/roll_call_lists/vote_menu_119_2.xml",
+          "retrieved_at": "2026-11-22T01:44:25.681818+00:00",
+          "elapsed_seconds": 0.538,
+          "data": [
+            {
+              "congress": 119,
+              "session": 2,
+              "date": "2026-11-20",
+              "roll_call_number": 279,
+              "question": "On the Cloture Motion",
+              "title": "Motion to Invoke Cloture: Jesus A. Osete to be U.S. District Judge for the Western District of Missouri",
+              "result": "Agreed to",
+              "yea_count": 45,
+              "nay_count": 33,
+              "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00279.htm"
+            },
+            {
+              "congress": 119,
+              "session": 2,
+              "date": "2026-11-20",
+              "roll_call_number": 278,
+              "question": "On the Cloture Motion",
+              "title": "Motion to Invoke Cloture: Peter M. Mansfield to be U.S. District Judge for the Eastern District of Louisiana",
+              "result": "Agreed to",
+              "yea_count": 48,
+              "nay_count": 31,
+              "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00278.htm"
+            },
+            {
+              "congress": 119,
+              "session": 2,
+              "date": "2026-11-20",
+              "roll_call_number": 277,
+              "question": "On the Cloture Motion",
+              "title": "Motion to Invoke Cloture: Robert E. Long, Jr., to be U.S. District Judge for the Middle District of Florida",
+              "result": "Agreed to",
+              "yea_count": 47,
+              "nay_count": 35,
+              "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00277.htm"
+            },
+            {
+              "congress": 119,
+              "session": 2,
+              "date": "2026-11-20",
+              "roll_call_number": 276,
+              "question": "On the Cloture Motion",
+              "title": "Motion to Invoke Cloture: Daniel Lewis Ballou to be U.S. District Judge for the Eastern District of Kentucky",
+              "result": "Agreed to",
+              "yea_count": 48,
+              "nay_count": 36,
+              "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00276.htm"
+            },
+            {
+              "congress": 119,
+              "session": 2,
+              "date": "2026-11-20",
+              "roll_call_number": 275,
+              "question": "On the Cloture Motion",
+              "title": "Motion to Invoke Cloture: Kyle Frederick Reardon to be U.S. District Judge for the District of Alaska",
+              "result": "Agreed to",
+              "yea_count": 55,
+              "nay_count": 31,
+              "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00275.htm"
+            },
+            {
+              "congress": 119,
+              "session": 2,
+              "date": "2026-11-20",
+              "roll_call_number": 274,
+              "question": "On the Nomination",
+              "title": "Confirmation: Courtney Leigh Coker, of T.X., to be U.S. District Judge for the Northern District of Texas",
+              "result": "Confirmed",
+              "yea_count": 49,
+              "nay_count": 41,
+              "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00274.htm"
+            },
+            {
+              "congress": 119,
+              "session": 2,
+              "date": "2026-11-20",
+              "roll_call_number": 273,
+              "question": "On the Cloture Motion",
+              "title": "Motion to Invoke Cloture: Courtney Leigh Coker, of T.X., to be U.S. District Judge for the Northern District of Texas",
+              "result": "Agreed to",
+              "yea_count": 49,
+              "nay_count": 43,
+              "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00273.htm"
+            },
+            {
+              "congress": 119,
+              "session": 2,
+              "date": "2026-11-20",
+              "roll_call_number": 272,
+              "question": "On the Nomination",
+              "title": "Confirmation: Richard Wesley Bennet, of T.X., to be U.S. District Judge for the Southern District of Texas",
+              "result": "Confirmed",
+              "yea_count": 49,
+              "nay_count": 43,
+              "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00272.htm"
+            },
+            {
+              "congress": 119,
+              "session": 2,
+              "date": "2026-11-19",
+              "roll_call_number": 271,
+              "question": "On the Cloture Motion",
+              "title": "Motion to Invoke Cloture: Richard Wesley Bennett to be U.S. District Judge for the Southern District of Texas",
+              "result": "Agreed to",
+              "yea_count": 48,
+              "nay_count": 46,
+              "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00271.htm"
+            },
+            {
+              "congress": 119,
+              "session": 2,
+              "date": "2026-11-19",
+              "roll_call_number": 270,
+              "question": "On Passage of the Bill",
+              "title": "H.R. 2347, as Amended; A bill to amend the Internal Revenue Code of 1986 to exclude from gross income any damages, other than punitive damages, received on account of any sexual acts or sexual contact.",
+              "result": "Passed",
+              "yea_count": 62,
+              "nay_count": 33,
+              "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00270.htm"
+            },
+            {
+              "congress": 119,
+              "session": 2,
+              "date": "2026-11-19",
+              "roll_call_number": 269,
+              "question": "On the Concurrent Resolution",
+              "title": "H.Con.Res. 93; A concurrent resolution directing the President, pursuant to section 5(c) of the War Powers Resolution, to remove United States Armed Forces from hostilities with Iran.",
+              "result": "Rejected",
+              "yea_count": 48,
+              "nay_count": 51,
+              "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00269.htm"
+            },
+            {
+              "congress": 119,
+              "session": 2,
+              "date": "2026-11-18",
+              "roll_call_number": 268,
+              "question": "On the Cloture Motion",
+              "title": "Motion to Invoke Cloture Re. H.R. 2347; A bill to amend the Internal Revenue Code of 1986 to exclude from gross income any damages, other than punitive damages, received on account of any sexual acts or sexual contact.",
+              "result": "Agreed to",
+              "yea_count": 65,
+              "nay_count": 31,
+              "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00268.htm"
+            },
+            {
+              "congress": 119,
+              "session": 2,
+              "date": "2026-11-18",
+              "roll_call_number": 267,
+              "question": "On the Amendment",
+              "title": "Capito Amdt. No. 6883; In the nature of a substitute.",
+              "result": "Agreed to",
+              "yea_count": 69,
+              "nay_count": 27,
+              "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00267.htm"
+            },
+            {
+              "congress": 119,
+              "session": 2,
+              "date": "2026-11-18",
+              "roll_call_number": 266,
+              "question": "On the Motion",
+              "title": "Motion to Waive All Applicable Budgetary Discipline Re: H.R. 2347; A bill to amend the Internal Revenue Code of 1986 to exclude from gross income any damages, other than punitive damages, received on account of any sexual acts or sexual contact.",
+              "result": "Agreed to",
+              "yea_count": 70,
+              "nay_count": 26,
+              "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00266.htm"
+            },
+            {
+              "congress": 119,
+              "session": 2,
+              "date": "2026-11-17",
+              "roll_call_number": 265,
+              "question": "On the Nomination",
+              "title": "Confirmation: Anna St. John, of L.A., to be U.S. Circuit Judge for the Fifth Circuit",
+              "result": "Confirmed",
+              "yea_count": 52,
+              "nay_count": 46,
+              "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00265.htm"
+            },
+            {
+              "congress": 119,
+              "session": 2,
+              "date": "2026-11-16",
+              "roll_call_number": 264,
+              "question": "On the Cloture Motion",
+              "title": "Motion to Invoke Cloture: Capito Amdt. No. 6883; In the nature of a substitute.",
+              "result": "Agreed to",
+              "yea_count": 70,
+              "nay_count": 27,
+              "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00264.htm"
+            },
+            {
+              "congress": 119,
+              "session": 2,
+              "date": "2026-11-16",
+              "roll_call_number": 263,
+              "question": "On the Nomination",
+              "title": "Confirmation: Daniel Desmond Domenico, of C.O., to be U.S. Circuit Judge for the Tenth Circuit",
+              "result": "Confirmed",
+              "yea_count": 51,
+              "nay_count": 46,
+              "source_url": "https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00263.htm"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Q07",
+      "source": "datadawn",
+      "question": "What recent congressional actions address defense procurement?",
+      "scope": "Thirty days, defense-procurement phrase, defense authorization title, or procurement in the defense policy area. Candidate actions require relevance review.",
+      "scores": {
+        "correctness": 1,
+        "provenance": 2,
+        "coverage": 1,
+        "freshness": 1
+      },
+      "elapsed_seconds": 0.218,
+      "status": "partial",
+      "note": "Replica query executed. Underlying records need independent checks.",
+      "answer": [
+        {
+          "bill_id": "119-s-4784",
+          "title": "National Defense Authorization Act for Fiscal Year 2027",
+          "action_date": "2026-11-16",
+          "action_text": "",
+          "url": "https://www.congress.gov/bill/119th-congress/senate-bill/4784"
+        },
+        {
+          "bill_id": "119-s-4784",
+          "title": "National Defense Authorization Act for Fiscal Year 2027",
+          "action_date": "2026-11-16",
+          "action_text": "Senate amendment submitted",
+          "url": "https://www.congress.gov/bill/119th-congress/senate-bill/4784"
+        }
+      ],
+      "evidence": [
+        {
+          "source_url": "https://regs.datadawn.org/openregs.json?sql=SELECT+DISTINCT+a.bill_id%2C+l.title%2C+a.action_date%2C+a.action_text%2C+l.url+FROM+legislation_actions+a+JOIN+legislation+l+USING+%28bill_id%29+WHERE+a.action_date+BETWEEN+%3Astart+AND+%3Aend+AND+%28l.title+LIKE+%27%25defense+procurement%25%27+OR+l.summary_text+LIKE+%27%25defense+procurement%25%27+OR+l.title+LIKE+%27%25National+Defense+Authorization+Act%25%27+OR+%28l.policy_area+%3D+%27Armed+Forces+and+National+Security%27+AND+%28l.title+LIKE+%27%25procurement%25%27+OR+l.summary_text+LIKE+%27%25procurement%25%27%29%29%29+ORDER+BY+a.action_date+DESC%2C+a.bill_id%2C+a.action_text+LIMIT+101&_shape=objects&start=2026-10-23&end=2026-11-21",
+          "retrieved_at": "2026-11-22T01:44:25.899574+00:00",
+          "elapsed_seconds": 0.217,
+          "data": {
+            "ok": true,
+            "database": "openregs",
+            "query_name": null,
+            "truncated": false,
+            "columns": [
+              "bill_id",
+              "title",
+              "action_date",
+              "action_text",
+              "url"
+            ],
+            "query": {
+              "sql": "SELECT DISTINCT a.bill_id, l.title, a.action_date, a.action_text, l.url FROM legislation_actions a JOIN legislation l USING (bill_id) WHERE a.action_date BETWEEN :start AND :end AND (l.title LIKE '%defense procurement%' OR l.summary_text LIKE '%defense procurement%' OR l.title LIKE '%National Defense Authorization Act%' OR (l.policy_area = 'Armed Forces and National Security' AND (l.title LIKE '%procurement%' OR l.summary_text LIKE '%procurement%'))) ORDER BY a.action_date DESC, a.bill_id, a.action_text LIMIT 101",
+              "params": {
+                "_timelimit": "2000",
+                "end": "2026-11-21",
+                "start": "2026-10-23"
+              }
+            },
+            "error": null,
+            "private": false,
+            "allow_execute_sql": true,
+            "query_ms": 2.34825600637123,
+            "source": "U.S. government sources, plus a few identifier registries; each is listed on the methodology page",
+            "source_url": "https://datadawn.org/methodology#data",
+            "license": "Public Domain (U.S. Government data)",
+            "license_url": "https://www.regulations.gov/faq",
+            "rows_count": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "Q08",
+      "source": "datadawn",
+      "question": "Which presidential actions were amended or superseded recently?",
+      "scope": "Thirty-day candidate search for actions with amendment, revocation or supersession language. Legal relationships require primary-text review.",
+      "scores": {
+        "correctness": 0,
+        "provenance": 1,
+        "coverage": 0,
+        "freshness": 1
+      },
+      "elapsed_seconds": 0.206,
+      "status": "partial",
+      "note": "Replica query executed. Underlying records need independent checks.",
+      "answer": [],
+      "evidence": [
+        {
+          "source_url": "https://regs.datadawn.org/openregs.json?sql=SELECT+document_number%2C+title%2C+signing_date%2C+publication_date%2C+html_url%2C+abstract+FROM+presidential_documents+WHERE+publication_date+BETWEEN+%3Astart+AND+%3Aend+AND+%28title+LIKE+%27%25amend%25%27+OR+title+LIKE+%27%25supersed%25%27+OR+title+LIKE+%27%25revok%25%27+OR+abstract+LIKE+%27%25executive+order%25is+hereby+amended%25%27+OR+abstract+LIKE+%27%25executive+order%25is+hereby+revoked%25%27%29+ORDER+BY+publication_date+DESC%2C+document_number+LIMIT+101&_shape=objects&start=2026-10-23&end=2026-11-21",
+          "retrieved_at": "2026-11-22T01:44:26.105646+00:00",
+          "elapsed_seconds": 0.206,
+          "data": {
+            "ok": true,
+            "database": "openregs",
+            "query_name": null,
+            "truncated": false,
+            "columns": [
+              "document_number",
+              "title",
+              "signing_date",
+              "publication_date",
+              "html_url",
+              "abstract"
+            ],
+            "query": {
+              "sql": "SELECT document_number, title, signing_date, publication_date, html_url, abstract FROM presidential_documents WHERE publication_date BETWEEN :start AND :end AND (title LIKE '%amend%' OR title LIKE '%supersed%' OR title LIKE '%revok%' OR abstract LIKE '%executive order%is hereby amended%' OR abstract LIKE '%executive order%is hereby revoked%') ORDER BY publication_date DESC, document_number LIMIT 101",
+              "params": {
+                "_timelimit": "2000",
+                "end": "2026-11-21",
+                "start": "2026-10-23"
+              }
+            },
+            "error": null,
+            "private": false,
+            "allow_execute_sql": true,
+            "query_ms": 0.6571229896508157,
+            "source": "U.S. government sources, plus a few identifier registries; each is listed on the methodology page",
+            "source_url": "https://datadawn.org/methodology#data",
+            "license": "Public Domain (U.S. Government data)",
+            "license_url": "https://www.regulations.gov/faq",
+            "rows_count": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "Q09",
+      "source": "usaspending",
+      "question": "What federal agencies are listed in the current official agency reference table?",
+      "scope": "Top-tier agency reference rows returned by USAspending.",
+      "scores": {
+        "correctness": 2,
+        "provenance": 1,
+        "coverage": 2,
+        "freshness": 1
+      },
+      "elapsed_seconds": 0.462,
+      "status": "verified",
+      "note": "Answer derived directly from the official USAspending response for the stated scope.",
+      "answer": [
+        {
+          "agency_id": 1525,
+          "toptier_code": "247",
+          "agency_name": "400 Years of African-American History Commission"
+        },
+        {
+          "agency_id": 1146,
+          "toptier_code": "310",
+          "agency_name": "Access Board"
+        },
+        {
+          "agency_id": 1136,
+          "toptier_code": "302",
+          "agency_name": "Administrative Conference of the U.S."
+        },
+        {
+          "agency_id": 1144,
+          "toptier_code": "306",
+          "agency_name": "Advisory Council on Historic Preservation"
+        },
+        {
+          "agency_id": 1527,
+          "toptier_code": "166",
+          "agency_name": "African Development Foundation"
+        },
+        {
+          "agency_id": 801,
+          "toptier_code": "072",
+          "agency_name": "Agency for International Development"
+        },
+        {
+          "agency_id": 805,
+          "toptier_code": "074",
+          "agency_name": "American Battle Monuments Commission"
+        },
+        {
+          "agency_id": 1416,
+          "toptier_code": "309",
+          "agency_name": "Appalachian Regional Commission"
+        },
+        {
+          "agency_id": 879,
+          "toptier_code": "084",
+          "agency_name": "Armed Forces Retirement Home"
+        },
+        {
+          "agency_id": 1159,
+          "toptier_code": "313",
+          "agency_name": "Barry Goldwater Scholarship and Excellence In Education Foundation"
+        },
+        {
+          "agency_id": 1426,
+          "toptier_code": "321",
+          "agency_name": "Commission for the Preservation of America's Heritage Abroad"
+        },
+        {
+          "agency_id": 1149,
+          "toptier_code": "323",
+          "agency_name": "Commission of Fine Arts"
+        },
+        {
+          "agency_id": 1138,
+          "toptier_code": "326",
+          "agency_name": "Commission on Civil Rights"
+        },
+        {
+          "agency_id": 1139,
+          "toptier_code": "338",
+          "agency_name": "Committee for Purchase from People Who Are Blind or Severely Disabled"
+        },
+        {
+          "agency_id": 1129,
+          "toptier_code": "339",
+          "agency_name": "Commodity Futures Trading Commission"
+        },
+        {
+          "agency_id": 1158,
+          "toptier_code": "581",
+          "agency_name": "Consumer Financial Protection Bureau"
+        },
+        {
+          "agency_id": 694,
+          "toptier_code": "061",
+          "agency_name": "Consumer Product Safety Commission"
+        },
+        {
+          "agency_id": 1166,
+          "toptier_code": "485",
+          "agency_name": "Corporation for National and Community Service"
+        },
+        {
+          "agency_id": 1205,
+          "toptier_code": "096",
+          "agency_name": "Corps of Engineers - Civil Works"
+        },
+        {
+          "agency_id": 1132,
+          "toptier_code": "542",
+          "agency_name": "Council of the Inspectors General on Integrity and Efficiency"
+        },
+        {
+          "agency_id": 1528,
+          "toptier_code": "9553",
+          "agency_name": "Court Services and Offender Supervision Agency"
+        },
+        {
+          "agency_id": 1137,
+          "toptier_code": "347",
+          "agency_name": "Defense Nuclear Facilities Safety Board"
+        },
+        {
+          "agency_id": 1156,
+          "toptier_code": "517",
+          "agency_name": "Delta Regional Authority"
+        },
+        {
+          "agency_id": 1165,
+          "toptier_code": "513",
+          "agency_name": "Denali Commission"
+        },
+        {
+          "agency_id": 95,
+          "toptier_code": "012",
+          "agency_name": "Department of Agriculture"
+        },
+        {
+          "agency_id": 183,
+          "toptier_code": "013",
+          "agency_name": "Department of Commerce"
+        },
+        {
+          "agency_id": 1173,
+          "toptier_code": "097",
+          "agency_name": "Department of Defense"
+        },
+        {
+          "agency_id": 1068,
+          "toptier_code": "091",
+          "agency_name": "Department of Education"
+        },
+        {
+          "agency_id": 930,
+          "toptier_code": "089",
+          "agency_name": "Department of Energy"
+        },
+        {
+          "agency_id": 806,
+          "toptier_code": "075",
+          "agency_name": "Department of Health and Human Services"
+        },
+        {
+          "agency_id": 766,
+          "toptier_code": "070",
+          "agency_name": "Department of Homeland Security"
+        },
+        {
+          "agency_id": 882,
+          "toptier_code": "086",
+          "agency_name": "Department of Housing and Urban Development"
+        },
+        {
+          "agency_id": 252,
+          "toptier_code": "015",
+          "agency_name": "Department of Justice"
+        },
+        {
+          "agency_id": 267,
+          "toptier_code": "1601",
+          "agency_name": "Department of Labor"
+        },
+        {
+          "agency_id": 315,
+          "toptier_code": "019",
+          "agency_name": "Department of State"
+        },
+        {
+          "agency_id": 731,
+          "toptier_code": "069",
+          "agency_name": "Department of Transportation"
+        },
+        {
+          "agency_id": 561,
+          "toptier_code": "036",
+          "agency_name": "Department of Veterans Affairs"
+        },
+        {
+          "agency_id": 209,
+          "toptier_code": "014",
+          "agency_name": "Department of the Interior"
+        },
+        {
+          "agency_id": 456,
+          "toptier_code": "020",
+          "agency_name": "Department of the Treasury"
+        },
+        {
+          "agency_id": 1523,
+          "toptier_code": "349",
+          "agency_name": "District of Columbia Courts"
+        },
+        {
+          "agency_id": 1141,
+          "toptier_code": "525",
+          "agency_name": "Election Assistance Commission"
+        },
+        {
+          "agency_id": 700,
+          "toptier_code": "068",
+          "agency_name": "Environmental Protection Agency"
+        },
+        {
+          "agency_id": 611,
+          "toptier_code": "045",
+          "agency_name": "Equal Employment Opportunity Commission"
+        },
+        {
+          "agency_id": 48,
+          "toptier_code": "1100",
+          "agency_name": "Executive Office of the President"
+        },
+        {
+          "agency_id": 878,
+          "toptier_code": "083",
+          "agency_name": "Export-Import Bank of the United States"
+        },
+        {
+          "agency_id": 860,
+          "toptier_code": "7802",
+          "agency_name": "Farm Credit System Insurance Corporation"
+        },
+        {
+          "agency_id": 538,
+          "toptier_code": "027",
+          "agency_name": "Federal Communications Commission"
+        },
+        {
+          "agency_id": 682,
+          "toptier_code": "051",
+          "agency_name": "Federal Deposit Insurance Corporation"
+        },
+        {
+          "agency_id": 1128,
+          "toptier_code": "360",
+          "agency_name": "Federal Election Commission"
+        },
+        {
+          "agency_id": 1161,
+          "toptier_code": "362",
+          "agency_name": "Federal Financial Institutions Examination Council"
+        },
+        {
+          "agency_id": 685,
+          "toptier_code": "054",
+          "agency_name": "Federal Labor Relations Authority"
+        },
+        {
+          "agency_id": 699,
+          "toptier_code": "065",
+          "agency_name": "Federal Maritime Commission"
+        },
+        {
+          "agency_id": 1125,
+          "toptier_code": "093",
+          "agency_name": "Federal Mediation and Conciliation Service"
+        },
+        {
+          "agency_id": 1127,
+          "toptier_code": "368",
+          "agency_name": "Federal Mine Safety and Health Review Commission"
+        },
+        {
+          "agency_id": 1524,
+          "toptier_code": "473",
+          "agency_name": "Federal Permitting Improvement Steering Council"
+        },
+        {
+          "agency_id": 552,
+          "toptier_code": "029",
+          "agency_name": "Federal Trade Commission"
+        },
+        {
+          "agency_id": 614,
+          "toptier_code": "047",
+          "agency_name": "General Services Administration"
+        },
+        {
+          "agency_id": 11,
+          "toptier_code": "005",
+          "agency_name": "Government Accountability Office"
+        },
+        {
+          "agency_id": 1147,
+          "toptier_code": "471",
+          "agency_name": "Gulf Coast Ecosystem Restoration Council"
+        },
+        {
+          "agency_id": 1131,
+          "toptier_code": "372",
+          "agency_name": "Harry S Truman Scholarship Foundation"
+        },
+        {
+          "agency_id": 1423,
+          "toptier_code": "474",
+          "agency_name": "Institute of Museum and Library Services"
+        },
+        {
+          "agency_id": 1526,
+          "toptier_code": "164",
+          "agency_name": "Inter-American Foundation"
+        },
+        {
+          "agency_id": 560,
+          "toptier_code": "034",
+          "agency_name": "International Trade Commission"
+        },
+        {
+          "agency_id": 1152,
+          "toptier_code": "381",
+          "agency_name": "James Madison Memorial Fellowship Foundation"
+        },
+        {
+          "agency_id": 1133,
+          "toptier_code": "382",
+          "agency_name": "Japan-United States Friendship Commission"
+        },
+        {
+          "agency_id": 558,
+          "toptier_code": "3301",
+          "agency_name": "John F. Kennedy Center for the Performing Arts"
+        },
+        {
+          "agency_id": 1134,
+          "toptier_code": "387",
+          "agency_name": "Marine Mammal Commission"
+        },
+        {
+          "agency_id": 610,
+          "toptier_code": "389",
+          "agency_name": "Merit Systems Protection Board"
+        },
+        {
+          "agency_id": 1154,
+          "toptier_code": "524",
+          "agency_name": "Millennium Challenge Corporation"
+        },
+        {
+          "agency_id": 1155,
+          "toptier_code": "487",
+          "agency_name": "Morris K. Udall and Stewart L. Udall Foundation"
+        },
+        {
+          "agency_id": 862,
+          "toptier_code": "080",
+          "agency_name": "National Aeronautics and Space Administration"
+        },
+        {
+          "agency_id": 925,
+          "toptier_code": "088",
+          "agency_name": "National Archives and Records Administration"
+        },
+        {
+          "agency_id": 1126,
+          "toptier_code": "394",
+          "agency_name": "National Capital Planning Commission"
+        },
+        {
+          "agency_id": 1417,
+          "toptier_code": "413",
+          "agency_name": "National Council on Disability"
+        },
+        {
+          "agency_id": 535,
+          "toptier_code": "025",
+          "agency_name": "National Credit Union Administration"
+        },
+        {
+          "agency_id": 687,
+          "toptier_code": "417",
+          "agency_name": "National Endowment for the Arts"
+        },
+        {
+          "agency_id": 692,
+          "toptier_code": "418",
+          "agency_name": "National Endowment for the Humanities"
+        },
+        {
+          "agency_id": 697,
+          "toptier_code": "420",
+          "agency_name": "National Labor Relations Board"
+        },
+        {
+          "agency_id": 1142,
+          "toptier_code": "421",
+          "agency_name": "National Mediation Board"
+        },
+        {
+          "agency_id": 655,
+          "toptier_code": "049",
+          "agency_name": "National Science Foundation"
+        },
+        {
+          "agency_id": 1130,
+          "toptier_code": "424",
+          "agency_name": "National Transportation Safety Board"
+        },
+        {
+          "agency_id": 1431,
+          "toptier_code": "573",
+          "agency_name": "Northern Border Regional Commission"
+        },
+        {
+          "agency_id": 554,
+          "toptier_code": "031",
+          "agency_name": "Nuclear Regulatory Commission"
+        },
+        {
+          "agency_id": 654,
+          "toptier_code": "431",
+          "agency_name": "Nuclear Waste Technical Review Board"
+        },
+        {
+          "agency_id": 1135,
+          "toptier_code": "432",
+          "agency_name": "Occupational Safety and Health Review Commission"
+        },
+        {
+          "agency_id": 1157,
+          "toptier_code": "434",
+          "agency_name": "Office of Government Ethics"
+        },
+        {
+          "agency_id": 650,
+          "toptier_code": "435",
+          "agency_name": "Office of Navajo and Hopi Indian Relocation"
+        },
+        {
+          "agency_id": 503,
+          "toptier_code": "024",
+          "agency_name": "Office of Personnel Management"
+        },
+        {
+          "agency_id": 695,
+          "toptier_code": "062",
+          "agency_name": "Office of Special Counsel"
+        },
+        {
+          "agency_id": 800,
+          "toptier_code": "071",
+          "agency_name": "Overseas Private Investment Corporation"
+        },
+        {
+          "agency_id": 1516,
+          "toptier_code": "579",
+          "agency_name": "Patient-Centered Outcomes Research Trust Fund"
+        },
+        {
+          "agency_id": 89,
+          "toptier_code": "1125",
+          "agency_name": "Peace Corps"
+        },
+        {
+          "agency_id": 308,
+          "toptier_code": "1602",
+          "agency_name": "Pension Benefit Guaranty Corporation"
+        },
+        {
+          "agency_id": 1164,
+          "toptier_code": "512",
+          "agency_name": "Presidio Trust"
+        },
+        {
+          "agency_id": 1143,
+          "toptier_code": "535",
+          "agency_name": "Privacy and Civil Liberties Oversight Board"
+        },
+        {
+          "agency_id": 1544,
+          "toptier_code": "290",
+          "agency_name": "Public Buildings Reform Board"
+        },
+        {
+          "agency_id": 693,
+          "toptier_code": "060",
+          "agency_name": "Railroad Retirement Board"
+        },
+        {
+          "agency_id": 680,
+          "toptier_code": "050",
+          "agency_name": "Securities and Exchange Commission"
+        },
+        {
+          "agency_id": 1067,
+          "toptier_code": "090",
+          "agency_name": "Selective Service System"
+        },
+        {
+          "agency_id": 803,
+          "toptier_code": "073",
+          "agency_name": "Small Business Administration"
+        },
+        {
+          "agency_id": 539,
+          "toptier_code": "028",
+          "agency_name": "Social Security Administration"
+        },
+        {
+          "agency_id": 1546,
+          "toptier_code": "574",
+          "agency_name": "Southeast Crescent Regional Commission"
+        },
+        {
+          "agency_id": 1612,
+          "toptier_code": "569",
+          "agency_name": "Southwest Border Regional Commission"
+        },
+        {
+          "agency_id": 1422,
+          "toptier_code": "472",
+          "agency_name": "Surface Transportation Board"
+        },
+        {
+          "agency_id": 1163,
+          "toptier_code": "514",
+          "agency_name": "U.S. Agency for Global Media"
+        },
+        {
+          "agency_id": 651,
+          "toptier_code": "376",
+          "agency_name": "U.S. Interagency Council on Homelessness"
+        },
+        {
+          "agency_id": 1522,
+          "toptier_code": "077",
+          "agency_name": "U.S. International Development Finance Corporation"
+        },
+        {
+          "agency_id": 1162,
+          "toptier_code": "510",
+          "agency_name": "United States Chemical Safety Board"
+        },
+        {
+          "agency_id": 1169,
+          "toptier_code": "345",
+          "agency_name": "United States Court of Appeals for Veterans Claims"
+        },
+        {
+          "agency_id": 90,
+          "toptier_code": "1133",
+          "agency_name": "United States Trade and Development Agency"
+        },
+        {
+          "agency_id": 1418,
+          "toptier_code": "519",
+          "agency_name": "Vietnam Education Foundation"
+        }
+      ],
+      "evidence": [
+        {
+          "source_url": "https://api.usaspending.gov/api/v2/references/toptier_agencies/",
+          "retrieved_at": "2026-11-22T01:44:26.567986+00:00",
+          "elapsed_seconds": 0.462,
+          "data": {
+            "results_count": 111
+          }
+        }
+      ]
+    },
+    {
+      "id": "Q10",
+      "source": "usaspending",
+      "question": "What was the Department of Energy's obligated funding in FY2026?",
+      "scope": "Agency total obligations in USD, FY2026, for DOE (top-tier code 089).",
+      "scores": {
+        "correctness": 2,
+        "provenance": 1,
+        "coverage": 2,
+        "freshness": 1
+      },
+      "elapsed_seconds": 0.315,
+      "status": "verified",
+      "note": "Answer derived directly from the official USAspending response for the stated scope.",
+      "answer": {
+        "toptier_code": "089",
+        "fiscal_year": 2026,
+        "reporting_period": 12,
+        "obligations_usd": 77494806227.17
+      },
+      "evidence": [
+        {
+          "source_url": "https://api.usaspending.gov/api/v2/agency/089/budgetary_resources/",
+          "retrieved_at": "2026-11-22T01:44:26.883562+00:00",
+          "elapsed_seconds": 0.315,
+          "data": {
+            "toptier_code": "089",
+            "messages": [],
+            "agency_data_by_year_count": 11,
+            "agency_data_by_year_sample": [
+              {
+                "fiscal_year": 2027,
+                "agency_budgetary_resources": null,
+                "agency_total_obligated": null,
+                "agency_total_outlayed": null,
+                "total_budgetary_resources": null,
+                "agency_obligation_by_period": []
+              },
+              {
+                "fiscal_year": 2026,
+                "agency_budgetary_resources": 123772962962.09,
+                "agency_total_obligated": 77494806227.17,
+                "agency_total_outlayed": 68803697467.84,
+                "total_budgetary_resources": 14142952299307.62,
+                "agency_obligation_by_period": [
+                  {
+                    "period": 2,
+                    "obligated": 13380932177.62
+                  },
+                  {
+                    "period": 3,
+                    "obligated": 17299160514.87
+                  },
+                  {
+                    "period": 4,
+                    "obligated": 20021448855.57
+                  },
+                  {
+                    "period": 5,
+                    "obligated": 35261296997.41
+                  },
+                  {
+                    "period": 6,
+                    "obligated": 39942740030.98
+                  },
+                  {
+                    "period": 7,
+                    "obligated": 50351357305.39
+                  },
+                  {
+                    "period": 8,
+                    "obligated": 53515104037.2
+                  },
+                  {
+                    "period": 9,
+                    "obligated": 57957437429.46
+                  },
+                  {
+                    "period": 10,
+                    "obligated": 63705146747.98
+                  },
+                  {
+                    "period": 11,
+                    "obligated": 69357515371.14
+                  },
+                  {
+                    "period": 12,
+                    "obligated": 77494806227.17
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "Q11",
+      "source": "usaspending",
+      "question": "Which federal agencies have the highest contract obligations in FY2026?",
+      "scope": "Top five awarding agencies by net prime-contract transaction obligations in USD, FY2026.",
+      "scores": {
+        "correctness": 2,
+        "provenance": 1,
+        "coverage": 2,
+        "freshness": 1
+      },
+      "elapsed_seconds": 0.324,
+      "status": "verified",
+      "note": "Answer derived directly from the official USAspending response for the stated scope.",
+      "answer": [
+        {
+          "id": 1173,
+          "code": "DOD",
+          "name": "Department of Defense",
+          "agency_slug": "department-of-defense",
+          "amount": 441043375122.44,
+          "total_outlays": null
+        },
+        {
+          "id": 561,
+          "code": "VA",
+          "name": "Department of Veterans Affairs",
+          "agency_slug": "department-of-veterans-affairs",
+          "amount": 85792889900.66,
+          "total_outlays": null
+        },
+        {
+          "id": 766,
+          "code": "DHS",
+          "name": "Department of Homeland Security",
+          "agency_slug": "department-of-homeland-security",
+          "amount": 73287508618.88,
+          "total_outlays": null
+        },
+        {
+          "id": 930,
+          "code": "DOE",
+          "name": "Department of Energy",
+          "agency_slug": "department-of-energy",
+          "amount": 55135498845.76,
+          "total_outlays": null
+        },
+        {
+          "id": 614,
+          "code": "GSA",
+          "name": "General Services Administration",
+          "agency_slug": "general-services-administration",
+          "amount": 28936076784.31,
+          "total_outlays": null
+        }
+      ],
+      "evidence": [
+        {
+          "source_url": "https://api.usaspending.gov/api/v2/search/spending_by_category/awarding_agency/",
+          "retrieved_at": "2026-11-22T01:44:27.207995+00:00",
+          "elapsed_seconds": 0.324,
+          "data": {
+            "category": "awarding_agency",
+            "spending_level": "transactions",
+            "limit": 5,
+            "page_metadata": {
+              "page": 1,
+              "next": 2,
+              "previous": null,
+              "hasNext": true,
+              "hasPrevious": false
+            },
+            "messages": [
+              "For searches, time period start and end dates are currently limited to an earliest date of 2007-10-01.  For data going back to 2000-10-01, use either the Custom Award Download feature on the website or one of our download or bulk_download API endpoints as listed on https://api.usaspending.gov/docs/endpoints. ",
+              "'subawards' will be deprecated in the future. Set ‘spending_level’ to ‘subawards’ instead. See documentation for more information. "
+            ],
+            "results_count": 5
+          },
+          "request_body": {
+            "filters": {
+              "time_period": [
+                {
+                  "start_date": "2025-10-01",
+                  "end_date": "2026-09-30"
+                }
+              ],
+              "award_type_codes": [
+                "A",
+                "B",
+                "C",
+                "D"
+              ]
+            },
+            "spending_level": "transactions",
+            "limit": 5,
+            "page": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "Q12",
+      "source": "usaspending",
+      "question": "What new AI-related contracts were awarded in the last 30 days?",
+      "scope": "Thirty days, keyword search for artificial intelligence. Post-filter award start dates and show up to 20 candidates. Reporting lag and keyword coverage are unknown.",
+      "scores": {
+        "correctness": 0,
+        "provenance": 1,
+        "coverage": 0,
+        "freshness": 1
+      },
+      "elapsed_seconds": 0.311,
+      "status": "partial",
+      "note": "Official API returned records for the stated proxy or bounded search.",
+      "answer": [],
+      "evidence": [
+        {
+          "source_url": "https://api.usaspending.gov/api/v2/search/spending_by_award/",
+          "retrieved_at": "2026-11-22T01:44:27.519518+00:00",
+          "elapsed_seconds": 0.311,
+          "data": {
+            "spending_level": "awards",
+            "limit": 20,
+            "page_metadata": {
+              "page": 1,
+              "hasNext": false,
+              "last_record_unique_id": null,
+              "last_record_sort_value": "None"
+            },
+            "messages": [
+              "For searches, time period start and end dates are currently limited to an earliest date of 2007-10-01.  For data going back to 2000-10-01, use either the Custom Award Download feature on the website or one of our download or bulk_download API endpoints as listed on https://api.usaspending.gov/docs/endpoints. "
+            ],
+            "results_count": 19,
+            "results_sample": [
+              {
+                "internal_id": 363156314,
+                "Award ID": "70T04026C7573N007",
+                "Start Date": "2026-09-30",
+                "Recipient Name": "ANALYTICAL AI, INC.",
+                "Description": "THE PURPOSE OF THIS CONTRACT IS TO SUPPORT ANALYTICAL AI DEVELOPMENT OF THE SECURSAIL SOLUTION, INCLUDING ARTIFICIAL INTELLIGENCE AND AUTOMATIC TARGET RECOGNITION ALGORITHMS TO IMPROVE SCREENING OF PASSENGERS WITH LIMITED MOBILITY",
+                "Awarding Agency": "Department of Homeland Security",
+                "awarding_agency_id": 766,
+                "agency_slug": "department-of-homeland-security",
+                "generated_internal_id": "CONT_AWD_70T04026C7573N007_7013_-NONE-_-NONE-"
+              },
+              {
+                "internal_id": 363129132,
+                "Award ID": "2099AC26F00077",
+                "Start Date": "2026-09-30",
+                "Recipient Name": "ALVAREZ LLC",
+                "Description": "ARTIFICIAL INTELLIGENCE (AI) COMPUTE INFRASTRUCTURE HARDWARE & SUPPORT",
+                "Awarding Agency": "Department of the Treasury",
+                "awarding_agency_id": 456,
+                "agency_slug": "department-of-the-treasury",
+                "generated_internal_id": "CONT_AWD_2099AC26F00077_2099_NNG15SD19B_8000"
+              }
+            ]
+          },
+          "request_body": {
+            "filters": {
+              "time_period": [
+                {
+                  "start_date": "2026-10-23",
+                  "end_date": "2026-11-21"
+                }
+              ],
+              "award_type_codes": [
+                "A",
+                "B",
+                "C",
+                "D"
+              ],
+              "keywords": [
+                "artificial intelligence"
+              ]
+            },
+            "spending_level": "awards",
+            "limit": 20,
+            "page": 1,
+            "sort": "Start Date",
+            "order": "desc",
+            "fields": [
+              "Award ID",
+              "Start Date",
+              "Recipient Name",
+              "Description",
+              "Awarding Agency"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "Q13",
+      "source": "usaspending",
+      "question": "How did cybersecurity contract obligations change year over year?",
+      "scope": "Keyword proxy for cybersecurity in prime-contract transactions. Compare complete FY2025 and FY2026 in USD.",
+      "scores": {
+        "correctness": 1,
+        "provenance": 1,
+        "coverage": 1,
+        "freshness": 1
+      },
+      "elapsed_seconds": 0.315,
+      "status": "partial",
+      "note": "Official API returned records for the stated proxy or bounded search.",
+      "answer": {
+        "obligations_usd_by_fy": {
+          "2025": 2007333244.89,
+          "2026": 1687449979.13
+        },
+        "change_usd": -319883265.76
+      },
+      "evidence": [
+        {
+          "source_url": "https://api.usaspending.gov/api/v2/search/spending_over_time/",
+          "retrieved_at": "2026-11-22T01:44:27.834803+00:00",
+          "elapsed_seconds": 0.315,
+          "data": {
+            "group": "fiscal_year",
+            "spending_level": "transactions",
+            "messages": [
+              "For searches, time period start and end dates are currently limited to an earliest date of 2007-10-01.  For data going back to 2000-10-01, use either the Custom Award Download feature on the website or one of our download or bulk_download API endpoints as listed on https://api.usaspending.gov/docs/endpoints. ",
+              "The 'subawards' field will be deprecated in the future. Set 'spending_level' to 'subawards' instead. See documentation for more information.",
+              "You may see additional month, quarter and year results when searching for Awards or Subawards. This is due to Awards or Subawards overlapping with the time period specified but having an 'action date' outside of that time period."
+            ],
+            "results_count": 2,
+            "results_sample": [
+              {
+                "aggregated_amount": 2007333244.89,
+                "time_period": {
+                  "fiscal_year": "2025"
+                },
+                "Contract_Obligations": 2007333244.89,
+                "Direct_Obligations": 0,
+                "Grant_Obligations": 0,
+                "Idv_Obligations": 0,
+                "Loan_Obligations": 0,
+                "Other_Obligations": 0,
+                "total_outlays": null,
+                "Contract_Outlays": null,
+                "Direct_Outlays": null,
+                "Grant_Outlays": null,
+                "Idv_Outlays": null,
+                "Loan_Outlays": null,
+                "Other_Outlays": null
+              },
+              {
+                "aggregated_amount": 1687449979.13,
+                "time_period": {
+                  "fiscal_year": "2026"
+                },
+                "Contract_Obligations": 1687449979.13,
+                "Direct_Obligations": 0,
+                "Grant_Obligations": 0,
+                "Idv_Obligations": 0,
+                "Loan_Obligations": 0,
+                "Other_Obligations": 0,
+                "total_outlays": null,
+                "Contract_Outlays": null,
+                "Direct_Outlays": null,
+                "Grant_Outlays": null,
+                "Idv_Outlays": null,
+                "Loan_Outlays": null,
+                "Other_Outlays": null
+              }
+            ]
+          },
+          "request_body": {
+            "filters": {
+              "time_period": [
+                {
+                  "start_date": "2024-10-01",
+                  "end_date": "2026-09-30"
+                }
+              ],
+              "award_type_codes": [
+                "A",
+                "B",
+                "C",
+                "D"
+              ],
+              "keywords": [
+                "cybersecurity"
+              ]
+            },
+            "spending_level": "transactions",
+            "group": "fiscal_year"
+          }
+        }
+      ]
+    },
+    {
+      "id": "Q14",
+      "source": "usaspending",
+      "question": "Which states received the largest federal research contract obligations?",
+      "scope": "Top five states by recipient location, FY2026, using the official Research and Development Product and Service Code category for prime contracts.",
+      "scores": {
+        "correctness": 2,
+        "provenance": 1,
+        "coverage": 2,
+        "freshness": 1
+      },
+      "elapsed_seconds": 0.737,
+      "status": "verified",
+      "note": "Answer derived directly from the official USAspending response for the stated scope.",
+      "answer": [
+        {
+          "shape_code": "CA",
+          "display_name": "California",
+          "aggregated_amount": 10600698306.02,
+          "population": 39538223,
+          "per_capita": 268.11
+        },
+        {
+          "shape_code": "VA",
+          "display_name": "Virginia",
+          "aggregated_amount": 9381450421.89,
+          "population": 8631393,
+          "per_capita": 1086.9
+        },
+        {
+          "shape_code": "TX",
+          "display_name": "Texas",
+          "aggregated_amount": 6103230023.58,
+          "population": 29145505,
+          "per_capita": 209.41
+        },
+        {
+          "shape_code": "MD",
+          "display_name": "Maryland",
+          "aggregated_amount": 5105947682.9,
+          "population": 6177224,
+          "per_capita": 826.58
+        },
+        {
+          "shape_code": "AL",
+          "display_name": "Alabama",
+          "aggregated_amount": 4322413827.56,
+          "population": 5024279,
+          "per_capita": 860.31
+        }
+      ],
+      "evidence": [
+        {
+          "source_url": "https://api.usaspending.gov/api/v2/search/spending_by_geography/",
+          "retrieved_at": "2026-11-22T01:44:28.572114+00:00",
+          "elapsed_seconds": 0.737,
+          "data": {
+            "scope": "recipient_location",
+            "geo_layer": "state",
+            "spending_level": "transactions",
+            "messages": [
+              "For searches, time period start and end dates are currently limited to an earliest date of 2007-10-01.  For data going back to 2000-10-01, use either the Custom Award Download feature on the website or one of our download or bulk_download API endpoints as listed on https://api.usaspending.gov/docs/endpoints. ",
+              "The 'subawards' field will be deprecated in the future. Set 'spending_level' to 'subawards' instead. See documentation for more information."
+            ],
+            "results_count": 52,
+            "results_sample": [
+              {
+                "shape_code": "VA",
+                "display_name": "Virginia",
+                "aggregated_amount": 9381450421.89,
+                "population": 8631393,
+                "per_capita": 1086.9
+              },
+              {
+                "shape_code": "CA",
+                "display_name": "California",
+                "aggregated_amount": 10600698306.02,
+                "population": 39538223,
+                "per_capita": 268.11
+              }
+            ]
+          },
+          "request_body": {
+            "filters": {
+              "time_period": [
+                {
+                  "start_date": "2025-10-01",
+                  "end_date": "2026-09-30"
+                }
+              ],
+              "award_type_codes": [
+                "A",
+                "B",
+                "C",
+                "D"
+              ],
+              "psc_codes": {
+                "require": [
+                  [
+                    "Research and Development"
+                  ]
+                ]
+              }
+            },
+            "spending_level": "transactions",
+            "scope": "recipient_location",
+            "geo_layer": "state"
+          }
+        }
+      ]
+    },
+    {
+      "id": "Q15",
+      "source": "gdelt",
+      "question": "What recent news articles discuss semiconductor investment?",
+      "scope": "Seven-day GDELT index search. Up to 20 candidate reports.",
+      "scores": {
+        "correctness": null,
+        "provenance": null,
+        "coverage": null,
+        "freshness": null
+      },
+      "elapsed_seconds": 5.021,
+      "status": "blocked",
+      "note": "HTTP Error 503: Service Unavailable",
+      "source_url": "https://api.gdeltproject.org/api/v2/doc/doc?query=semiconductor+investment&mode=artlist&format=json&timespan=7d&maxrecords=20&sort=datedesc",
+      "http_status": 503
+    },
+    {
+      "id": "Q16",
+      "source": "gdelt",
+      "question": "What recent news reports mention new defense procurement deals?",
+      "scope": "Seven-day GDELT index search. Up to 20 candidate reports.",
+      "scores": {
+        "correctness": null,
+        "provenance": null,
+        "coverage": null,
+        "freshness": null
+      },
+      "elapsed_seconds": 5.033,
+      "status": "blocked",
+      "note": "HTTP Error 503: Service Unavailable",
+      "source_url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22defense+procurement%22+contract&mode=artlist&format=json&timespan=7d&maxrecords=20&sort=datedesc",
+      "http_status": 503
+    },
+    {
+      "id": "Q17",
+      "source": "gdelt",
+      "question": "How has news attention to critical minerals changed over the past month?",
+      "scope": "GDELT TimelineVol share of monitored coverage for the phrase critical minerals over 30 days.",
+      "scores": {
+        "correctness": null,
+        "provenance": null,
+        "coverage": null,
+        "freshness": null
+      },
+      "elapsed_seconds": 5.027,
+      "status": "blocked",
+      "note": "HTTP Error 503: Service Unavailable",
+      "source_url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22critical+minerals%22&mode=timelinevol&format=json&timespan=30d",
+      "http_status": 503
+    },
+    {
+      "id": "Q18",
+      "source": "gdelt",
+      "question": "Which news outlets independently reported the same international event?",
+      "status": "unsupported",
+      "note": "No event specified and no method to establish outlet independence or detect syndication.",
+      "scores": {
+        "correctness": null,
+        "provenance": null,
+        "coverage": null,
+        "freshness": null
+      },
+      "elapsed_seconds": null
+    },
+    {
+      "id": "Q19",
+      "source": "gdelt",
+      "question": "What major energy infrastructure events were reported in the past 24 hours?",
+      "scope": "GDELT article candidates over 24 hours. Significance and occurrence require independent review.",
+      "scores": {
+        "correctness": null,
+        "provenance": null,
+        "coverage": null,
+        "freshness": null
+      },
+      "elapsed_seconds": 5.023,
+      "status": "blocked",
+      "note": "HTTP Error 503: Service Unavailable",
+      "source_url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%22energy+infrastructure%22&mode=artlist&format=json&timespan=24h&maxrecords=20&sort=datedesc",
+      "http_status": 503
+    },
+    {
+      "id": "Q20",
+      "source": "gdelt",
+      "question": "Which recently reported geopolitical events are corroborated by official records?",
+      "status": "unsupported",
+      "note": "No reliable matching and corroboration of news claims against official records.",
+      "scores": {
+        "correctness": null,
+        "provenance": null,
+        "coverage": null,
+        "freshness": null
+      },
+      "elapsed_seconds": null
+    }
+  ]
+}

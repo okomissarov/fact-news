@@ -1,4 +1,4 @@
-"""Optional MCP adapter. Install with: pip install mcp
+"""Optional MCP adapter. Install with: pip install 'mcp>=1,<2'
 
 Local stdio is the recommended starting point; HTTP requires access controls
 before exposure to untrusted networks.

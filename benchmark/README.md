@@ -1,15 +1,32 @@
 # Fact News evaluation benchmark
 
-The 20 questions in `questions.json` are a **test plan**, not 20 completed answers.
+`questions.json` defines the 20 evaluation questions. Run the fixed queries
+from the repository root with Python 3.11+ and network access:
 
-## Evaluation rubric (score 0–2 each)
-- **Correctness:** 0 unsupported/wrong; 1 partially grounded; 2 verified against retrieved data.
-- **Provenance:** 0 missing; 1 dataset URL only; 2 exact underlying record + timestamp.
-- **Coverage:** 0 cannot answer; 1 partial; 2 fully answers required scope.
-- **Freshness:** 0 date missing/stale; 1 date available but lag unknown; 2 event/reporting dates and known lag identified.
-- **Latency:** record observed wall-clock seconds (do not award a score without measurement).
+```sh
+python -m unittest discover -s tests -v
+python -m factnews.cli --source all
+python -m factnews.benchmark --as-of 2026-11-21
+```
 
-Store observed results separately in `results/` as JSON and never mark a question complete based on documentation alone. For a cross-source question, confirm whether secondary reporting has actually been checked against official records. Separate API connectivity from end-to-end question-answer performance.
+The as-of date controls government query windows. Results reflect source
+coverage at retrieval time, and GDELT windows are relative to that time.
 
-## Current implementation scope
-The CLI implements bounded examples: recent Federal Register rows through DataDawn, the USAspending agency reference list, and GDELT's article discovery search. More complex benchmark questions are deliberately marked `not_implemented`. There is no LLM reasoning loop yet; these functions are the beginnings of its tool interface.
+## Result labels and scores
+
+- **Verified** means the answer follows from the official API for the stated scope or has been checked against primary records.
+- **Partial** means the API returned a bounded search, proxy, or replica result with incomplete coverage or verification.
+- **Blocked** means execution failed and no answer was scored.
+- **Unsupported** means no reliable method was implemented for that question.
+
+Each observed answer records correctness, provenance, coverage, and freshness
+on the 0–2 rubric. A score of 0 indicates missing or unsupported evidence, 1
+indicates partial evidence, and 2 indicates evidence meeting the rubric for
+the stated scope. Provenance scores of 2 include record-level links and
+retrieval timestamps. Freshness scores of 2 require established reporting lag
+as well as dates. Latency is measured wall-clock time per question. Null scores
+indicate there was no answer to evaluate. Read the scope and notes alongside
+the scores, especially for empty keyword matches and media discovery.
+
+See [the live results](results/2026-11-21-live.json) and
+[the validation notes](results/2026-11-21-validation.md).
