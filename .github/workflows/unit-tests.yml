@@ -1,0 +1,21 @@
+name: Unit tests
+on:
+  push:
+    branches: [main, feat/api-first-benchmark]
+  pull_request:
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate syntax and run mocked unit tests
+        run: |
+          python -m compileall -q factnews tests
+          python -m unittest discover -s tests -v

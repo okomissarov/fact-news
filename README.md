@@ -10,4 +10,5 @@ API-first, read-only factual research agent. Sources: DataDawn/OpenRegs (governm
 - Distinguish budget authority, obligations and outlays.
 - Benchmark source coverage, correctness, latency and provenance before expanding.
 
-Initial scaffold only; no integrations or automated jobs are running yet.
+Run the live benchmark with `python -m factnews.benchmark --as-of YYYY-MM-DD`.
+See the [benchmark guide](benchmark/README.md) for results and coverage.

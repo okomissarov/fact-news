@@ -1,0 +1,53 @@
+{
+  "tested_at": "2026-11-22T01:44:08.794773+00:00",
+  "sdk_version": "1.30.0",
+  "transport": "stdio",
+  "calls": [
+    {
+      "tool": "recent_federal_register",
+      "arguments": {
+        "limit": 2
+      },
+      "elapsed_seconds": 0.22,
+      "status": "returned",
+      "source_url": "https://regs.datadawn.org/openregs.json?sql=SELECT+document_number%2Ctitle%2Ctype%2Cpublication_date%2Cagency_names%2Chtml_url+FROM+federal_register+WHERE+publication_date+%3C%3D+%3Aend+ORDER+BY+publication_date+DESC%2C+document_number+LIMIT+2&_shape=objects&end=2026-11-21",
+      "retrieved_at": "2026-11-22T01:44:09.311963+00:00",
+      "record_count": 2
+    },
+    {
+      "tool": "federal_agency_reference",
+      "arguments": {},
+      "elapsed_seconds": 0.37,
+      "status": "returned",
+      "source_url": "https://api.usaspending.gov/api/v2/references/toptier_agencies/",
+      "retrieved_at": "2026-11-22T01:44:09.679658+00:00",
+      "record_count": 111
+    },
+    {
+      "tool": "discover_news_articles",
+      "arguments": {
+        "query": "semiconductor",
+        "timespan": "7d",
+        "limit": 2
+      },
+      "elapsed_seconds": 5.043,
+      "error": "Error executing tool discover_news_articles: HTTP Error 503: Service Unavailable",
+      "status": "blocked"
+    },
+    {
+      "tool": "recent_federal_register",
+      "arguments": {
+        "limit": 101
+      },
+      "elapsed_seconds": 0.002,
+      "error": "Error executing tool recent_federal_register: limit must be 1..100",
+      "status": "rejected"
+    }
+  ],
+  "protocol_version": "2025-11-25",
+  "tools": [
+    "discover_news_articles",
+    "federal_agency_reference",
+    "recent_federal_register"
+  ]
+}

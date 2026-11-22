@@ -1,0 +1,147 @@
+{
+  "version": "0.1",
+  "created_utc": "2026-11-21",
+  "note": "Benchmark definitions. Implementation scope is listed here. Observed outcomes are in results/.",
+  "questions": [
+    {
+      "id": "Q01",
+      "source": "datadawn",
+      "question": "What presidential executive orders were published in the last seven days?",
+      "required_capability": "federal_register",
+      "connector_support": "implemented"
+    },
+    {
+      "id": "Q02",
+      "source": "datadawn",
+      "question": "Which agencies published the most final rules during the last thirty days?",
+      "required_capability": "federal_register",
+      "connector_support": "implemented"
+    },
+    {
+      "id": "Q03",
+      "source": "datadawn",
+      "question": "What new proposed regulations mention artificial intelligence?",
+      "required_capability": "federal_register",
+      "connector_support": "partial"
+    },
+    {
+      "id": "Q04",
+      "source": "datadawn",
+      "question": "Which recently published federal actions relate to semiconductor supply chains?",
+      "required_capability": "federal_register",
+      "connector_support": "partial"
+    },
+    {
+      "id": "Q05",
+      "source": "datadawn",
+      "question": "What congressional bills advanced to a new stage this week?",
+      "required_capability": "legislative_actions",
+      "connector_support": "partial"
+    },
+    {
+      "id": "Q06",
+      "source": "datadawn",
+      "question": "Which Senate roll-call votes occurred during the past week?",
+      "required_capability": "congress_votes",
+      "connector_support": "implemented"
+    },
+    {
+      "id": "Q07",
+      "source": "datadawn",
+      "question": "What recent congressional actions address defense procurement?",
+      "required_capability": "legislative_actions",
+      "connector_support": "partial"
+    },
+    {
+      "id": "Q08",
+      "source": "datadawn",
+      "question": "Which presidential actions were amended or superseded recently?",
+      "required_capability": "presidential_documents",
+      "connector_support": "partial"
+    },
+    {
+      "id": "Q09",
+      "source": "usaspending",
+      "question": "What federal agencies are listed in the current official agency reference table?",
+      "required_capability": "toptier_agencies",
+      "connector_support": "implemented"
+    },
+    {
+      "id": "Q10",
+      "source": "usaspending",
+      "question": "What was the Department of Energy's obligated funding in FY2026?",
+      "required_capability": "agency_balances",
+      "connector_support": "implemented"
+    },
+    {
+      "id": "Q11",
+      "source": "usaspending",
+      "question": "Which federal agencies have the highest contract obligations in FY2026?",
+      "required_capability": "award_search",
+      "connector_support": "implemented"
+    },
+    {
+      "id": "Q12",
+      "source": "usaspending",
+      "question": "What new AI-related contracts were awarded in the last 30 days?",
+      "required_capability": "award_search",
+      "connector_support": "partial"
+    },
+    {
+      "id": "Q13",
+      "source": "usaspending",
+      "question": "How did cybersecurity contract obligations change year over year?",
+      "required_capability": "award_search",
+      "connector_support": "partial"
+    },
+    {
+      "id": "Q14",
+      "source": "usaspending",
+      "question": "Which states received the largest federal research contract obligations?",
+      "required_capability": "recipient_location",
+      "connector_support": "implemented"
+    },
+    {
+      "id": "Q15",
+      "source": "gdelt",
+      "question": "What recent news articles discuss semiconductor investment?",
+      "required_capability": "doc_articles",
+      "connector_support": "partial"
+    },
+    {
+      "id": "Q16",
+      "source": "gdelt",
+      "question": "What recent news reports mention new defense procurement deals?",
+      "required_capability": "doc_articles",
+      "connector_support": "partial"
+    },
+    {
+      "id": "Q17",
+      "source": "gdelt",
+      "question": "How has news attention to critical minerals changed over the past month?",
+      "required_capability": "doc_timeline",
+      "connector_support": "implemented"
+    },
+    {
+      "id": "Q18",
+      "source": "gdelt",
+      "question": "Which news outlets independently reported the same international event?",
+      "required_capability": "article_clustering",
+      "connector_support": "not_implemented"
+    },
+    {
+      "id": "Q19",
+      "source": "gdelt",
+      "question": "What major energy infrastructure events were reported in the past 24 hours?",
+      "required_capability": "doc_articles",
+      "connector_support": "partial"
+    },
+    {
+      "id": "Q20",
+      "source": "gdelt",
+      "question": "Which recently reported geopolitical events are corroborated by official records?",
+      "required_capability": "cross_source_verification",
+      "connector_support": "not_implemented"
+    }
+  ]
+}
