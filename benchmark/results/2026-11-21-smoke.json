@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-21",
+  "runner": "ChatGPT tool environment",
+  "tests": [
+    {
+      "id": "unit-builders",
+      "status": "passed",
+      "count": 4,
+      "method": "Reproduced GitHub-committed source builder functions and associated unit assertions in Python environment with injected mock transport; not a direct clone of repo"
+    },
+    {
+      "id": "usaspending-live",
+      "status": "passed",
+      "method": "Web research tool fetched official JSON/DRF browsable response",
+      "url": "https://api.usaspending.gov/api/v2/references/toptier_agencies/",
+      "observation": "HTTP 200 and structured agency results"
+    },
+    {
+      "id": "datadawn-live",
+      "status": "unverified",
+      "method": "Web research browser",
+      "observation": "API docs/schema reachable, constructed SQL query URL not accessible through web tool; failure not proof service down"
+    },
+    {
+      "id": "gdelt-live",
+      "status": "unverified",
+      "method": "Web research browser",
+      "observation": "API docs reachable, GDELT DOC JSON endpoint not accessible via web tool; failure not proof service down"
+    },
+    {
+      "id": "repo-ci",
+      "status": "not_run",
+      "observation": "GitHub Actions workflow created, no workflow runs appeared at last query"
+    }
+  ],
+  "scope": "Tool/endpoint smoke tests only. The 20-question factual benchmark remains not_run.",
+  "follow_up": "Use GitHub Actions or a network-capable runtime to test live DataDawn and GDELT URLs; then implement and run benchmark queries."
+}
